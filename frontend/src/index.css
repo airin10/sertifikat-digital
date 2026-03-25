@@ -1,0 +1,1486 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, 
+               Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #c7d2fe 100%);
+  min-height: 100vh;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Navigation */
+.navbar {
+  background: linear-gradient(90deg, #2563eb, #4f46e5, #7c3aed);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.logo-icon:hover {
+  transform: scale(1.1);
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.9);
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.nav-link.active {
+  background: rgba(255,255,255,0.2);
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 32px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-body {
+  padding: 32px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  color: white;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 20px -5px rgba(37,99,235,0.3);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e1;
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #16a34a, #059669);
+  color: white;
+}
+
+.btn-success:hover {
+  box-shadow: 0 10px 20px -5px rgba(22,163,74,0.3);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Mode Cards */
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.mode-card {
+  position: relative;
+  padding: 24px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mode-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.mode-card.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  transform: scale(1.02);
+}
+
+.mode-card.selected-green {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.mode-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.mode-icon.blue {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: white;
+}
+
+.mode-icon.green {
+  background: linear-gradient(135deg, #22c55e, #10b981);
+  color: white;
+}
+
+.check-badge {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 32px;
+  height: 32px;
+  background: #3b82f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.check-badge.green {
+  background: #22c55e;
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.step.active {
+  background: #2563eb;
+  color: white;
+}
+
+.step.inactive {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.step-line {
+  width: 64px;
+  height: 4px;
+  border-radius: 2px;
+  margin: 0 8px;
+}
+
+.step-line.active {
+  background: #2563eb;
+}
+
+.step-line.inactive {
+  background: #e2e8f0;
+}
+
+/* Upload Area */
+.upload-area {
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  background: #f8fafc;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.upload-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Result Section */
+.result-success {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  padding: 32px;
+  border-radius: 16px;
+}
+
+.result-icon {
+  width: 80px;
+  height: 80px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  margin: 0 auto 16px;
+  box-shadow: 0 10px 15px -3px rgba(34,197,94,0.3);
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.info-box {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-family: monospace;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+
+.text-sm { font-size: 14px; }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+.text-2xl { font-size: 24px; }
+.text-3xl { font-size: 30px; }
+.text-4xl { font-size: 36px; }
+
+.text-slate-600 { color: #475569; }
+.text-slate-700 { color: #334155; }
+.text-slate-800 { color: #1e293b; }
+.text-blue-600 { color: #2563eb; }
+.text-blue-700 { color: #1d4ed8; }
+.text-blue-800 { color: #1e40af; }
+.text-green-600 { color: #16a34a; }
+.text-green-700 { color: #15803d; }
+.text-green-800 { color: #166534; }
+
+.bg-slate-50 { background: #f8fafc; }
+.bg-slate-100 { background: #f1f5f9; }
+.bg-blue-50 { background: #eff6ff; }
+.bg-blue-100 { background: #dbeafe; }
+.bg-green-50 { background: #f0fdf4; }
+.bg-green-100 { background: #dcfce7; }
+
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+
+.p-4 { padding: 16px; }
+.p-6 { padding: 24px; }
+.p-8 { padding: 32px; }
+
+.py-3 { padding-top: 12px; padding-bottom: 12px; }
+.py-4 { padding-top: 16px; padding-bottom: 16px; }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+.px-6 { padding-left: 24px; padding-right: 24px; }
+.px-8 { padding-left: 32px; padding-right: 32px; }
+
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+
+.grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.rounded-lg { border-radius: 8px; }
+.rounded-xl { border-radius: 12px; }
+.rounded-2xl { border-radius: 16px; }
+.rounded-3xl { border-radius: 24px; }
+.rounded-full { border-radius: 9999px; }
+
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+.shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+
+.w-full { width: 100%; }
+.max-w-4xl { max-width: 896px; }
+.max-w-5xl { max-width: 1024px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mode-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+}
+
+/* Tambahan untuk CertificateForm */
+
+.mode-banner {
+  border: 1px solid;
+}
+
+.mode-banner.full_text {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.mode-banner.structured {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.mode-badge {
+  border-radius: 9999px;
+}
+
+.mode-badge.full_text {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.mode-badge.structured {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.btn-blue {
+  background: linear-gradient(90deg, #2563eb, #0891b2);
+  color: white;
+}
+
+.btn-blue:hover {
+  box-shadow: 0 10px 20px -5px rgba(37,99,235,0.3);
+}
+
+.btn-green {
+  background: linear-gradient(90deg, #16a34a, #059669);
+  color: white;
+}
+
+.btn-green:hover {
+  box-shadow: 0 10px 20px -5px rgba(22,163,74,0.3);
+}
+
+.btn-text {
+  background: transparent;
+  color: #64748b;
+  padding: 12px 24px;
+}
+
+.btn-text:hover {
+  color: #334155;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.preview-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 80px;
+}
+
+.result-success {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .max-w-5xl {
+    padding: 0 16px;
+  }
+}
+
+.bg-grid-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ===== Custom Utilities untuk Bootstrap 5 ===== */
+
+/* Hover shadow effect */
+.hover-shadow {
+  transition: all 0.2s ease-in-out;
+}
+.hover-shadow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Purple color utilities (Bootstrap 5 beta doesn't have these by default) */
+.bg-purple {
+  --bs-bg-opacity: 1;
+  background-color: #6f42c1 !important;
+}
+.text-purple {
+  color: #6f42c1 !important;
+}
+.border-purple-subtle {
+  border-color: rgba(111, 66, 193, 0.25) !important;
+}
+
+/* Badge rounded circle */
+.badge.rounded-circle {
+  border-radius: 50% !important;
+}
+
+/* Subtle border variants */
+.border-primary-subtle {
+  border-color: rgba(13, 110, 253, 0.25) !important;
+}
+.border-success-subtle {
+  border-color: rgba(25, 135, 84, 0.25) !important;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+.bg-opacity-25 {
+  --bs-bg-opacity: 0.25;
+}
+
+/* Pulse animation for success state */
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: translate(-50%, -50%) scale(1.1); 
+  }
+}
+
+/* Lucide icons animation */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Form input icon spacing */
+.form-control.ps-5,
+.form-select.ps-5 {
+  padding-left: 2.5rem !important;
+}
+
+/* Card header title spacing */
+.card-header .card-title small {
+  font-size: 0.75rem;
+}
+
+/* Responsive breadcrumb step indicator */
+.breadcrumb {
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #6c757d;
+}
+.breadcrumb-item.active {
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+/* Badge gradient fix for Bootstrap 5 beta */
+.bg-gradient {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0)) !important;
+}
+
+/* ===== Custom CSS untuk Bootstrap 5.0.0-beta1 ===== */
+
+/* Badge rounded circle */
+.badge.rounded-circle {
+  border-radius: 50% !important;
+}
+
+/* Lucide icons animation */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Form input icon spacing */
+.form-control.ps-5,
+.form-select.ps-5 {
+  padding-left: 2.5rem !important;
+}
+
+/* Card hover effect (optional) */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Breadcrumb step indicator fix */
+.breadcrumb {
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #6c757d;
+}
+.breadcrumb-item.active {
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+/* Ensure text is always readable on colored backgrounds */
+.card-header.bg-primary .card-title,
+.card-header.bg-success .card-title {
+  color: white !important;
+}
+.card-header.bg-primary small,
+.card-header.bg-success small {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Success state icon container */
+.bg-success.rounded-circle {
+  background-color: #198754 !important;
+}
+.bg-primary.rounded-circle {
+  background-color: #0d6efd !important;
+}
+.bg-secondary.rounded-circle {
+  background-color: #6c757d !important;
+}
+
+/* ===== Custom CSS untuk Bootstrap 5.0.0-beta1 ===== */
+
+/* Lucide icons animation */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Rounded utilities for Bootstrap 5 beta */
+.rounded-3 {
+  border-radius: 0.3rem !important;
+}
+.rounded-4 {
+  border-radius: 0.5rem !important;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Border subtle variant */
+.border-secondary-subtle {
+  border-color: rgba(108, 117, 125, 0.25) !important;
+}
+
+/* Card hover effect */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Cursor pointer for dropzone */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Ensure text is always readable */
+.bg-success.bg-opacity-10,
+.bg-danger.bg-opacity-10,
+.bg-primary.bg-opacity-10 {
+  color: #212529 !important;
+}
+
+/* Badge border fix */
+.badge.border {
+  border: 1px solid #dee2e6 !important;
+}
+
+/* Font monospace fallback */
+.font-monospace {
+  font-family: var(--bs-font-monospace) !important;
+}
+
+/* Small uppercase labels */
+.text-uppercase.small {
+  letter-spacing: 0.05em;
+}
+
+/* Dropzone transition */
+.border-dashed {
+  border-style: dashed !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* ===== Custom CSS untuk Login Bootstrap 5 ===== */
+
+/* Purple color utility (Bootstrap 5 beta doesn't have this by default) */
+.bg-purple {
+  --bs-bg-opacity: 1;
+  background-color: #6f42c1 !important;
+}
+
+/* Hover effect for back button */
+.hover-text-dark:hover {
+  color: #212529 !important;
+}
+
+/* Subtle background opacity */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Card shadow enhancement */
+.card.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Form control focus enhancement */
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Spinner animation fix for Bootstrap 5 beta */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
+
+/* Rounded utilities */
+.rounded-4 {
+  border-radius: 0.5rem !important;
+}
+
+/* Position utilities for decoration blobs */
+.position-absolute {
+  position: absolute !important;
+}
+.top-0 { top: 0 !important; }
+.end-0 { right: 0 !important; }
+.bottom-0 { bottom: 0 !important; }
+.start-0 { left: 0 !important; }
+
+/* Blur effect for decoration */
+[style*="blur"] {
+  -webkit-backdrop-filter: blur(100px);
+  backdrop-filter: blur(100px);
+}
+
+/* Badge circle for error indicator */
+.badge.rounded-circle {
+  border-radius: 50% !important;
+  min-width: 6px;
+  min-height: 6px;
+  padding: 0;
+}
+
+/* ===== Custom CSS untuk AdminDashboard Bootstrap 5 ===== */
+
+/* Purple color utility */
+.bg-purple {
+  --bs-bg-opacity: 1;
+  background-color: #6f42c1 !important;
+}
+.text-purple {
+  color: #6f42c1 !important;
+}
+.border-purple {
+  border-color: #6f42c1 !important;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+.bg-opacity-20 {
+  --bs-bg-opacity: 0.2;
+}
+
+/* Hover effects */
+.hover-shadow {
+  transition: all 0.2s ease-in-out;
+}
+.hover-shadow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+.hover-scale:hover {
+  transform: scale(1.1);
+}
+
+.hover-text-dark:hover {
+  color: #212529 !important;
+}
+
+/* Rounded utilities for Bootstrap 5 beta */
+.rounded-3 {
+  border-radius: 0.3rem !important;
+}
+
+/* Card transitions */
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Gap utility for older Bootstrap beta */
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+
+/* Small heading fix */
+.h6 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+/* List group item customization */
+.list-group-item {
+  border-color: #e9ecef !important;
+}
+.list-group-item:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* Header shadow */
+header.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Card shadow enhancement */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* ===== Custom CSS untuk CertificateList Bootstrap 5 ===== */
+
+/* Badge border subtle variants */
+.border-danger-subtle {
+  border-color: rgba(220, 53, 69, 0.25) !important;
+}
+.border-success-subtle {
+  border-color: rgba(25, 135, 84, 0.25) !important;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Table hover enhancement */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Cursor pointer for details summary */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Code badge styling */
+code.bg-light {
+  background-color: #f8f9fa !important;
+  border: 1px solid #dee2e6;
+}
+
+/* Small button icon alignment */
+.btn-sm svg {
+  vertical-align: -2px;
+}
+
+/* Card shadow for Bootstrap 5 beta */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Responsive table padding */
+.table-responsive {
+  border-radius: 0.25rem;
+}
+
+/* Badge text contrast fix */
+.badge.bg-opacity-10 {
+  font-weight: 500;
+}
+.badge.bg-opacity-10.text-danger {
+  color: #dc3545 !important;
+}
+.badge.bg-opacity-10.text-success {
+  color: #198754 !important;
+}
+
+/* ===== Custom CSS untuk ParticipantManager Bootstrap 5 ===== */
+
+/* Badge border subtle variants */
+.border-success-subtle {
+  border-color: rgba(25, 135, 84, 0.25) !important;
+}
+.border-danger-subtle {
+  border-color: rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Table hover enhancement */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Code badge styling */
+code.bg-light {
+  background-color: #f8f9fa !important;
+  border: 1px solid #dee2e6;
+}
+
+/* Small button icon alignment */
+.btn-sm svg {
+  vertical-align: -2px;
+}
+
+/* Card shadow for Bootstrap 5 beta */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+.modal-content.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Modal backdrop fix for manual show */
+.modal.fade.show.d-block {
+  display: block !important;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Badge text contrast fix */
+.badge.bg-opacity-10 {
+  font-weight: 500;
+}
+.badge.bg-opacity-10.text-success {
+  color: #198754 !important;
+}
+.badge.bg-opacity-10.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Gap utility for Bootstrap 5 beta */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+
+/* ===== Custom CSS untuk Register Bootstrap 5 ===== */
+
+/* Purple color utility */
+.bg-purple {
+  --bs-bg-opacity: 1;
+  background-color: #6f42c1 !important;
+}
+.text-purple {
+  color: #6f42c1 !important;
+}
+.border-purple {
+  border-color: #6f42c1 !important;
+}
+.btn-outline-purple {
+  color: #6f42c1;
+  border-color: #6f42c1;
+}
+.btn-outline-purple:hover {
+  color: #fff;
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+}
+.btn-check:checked + .btn-outline-purple,
+.btn-outline-purple.active {
+  color: #fff;
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+}
+
+/* Background opacity utilities */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Hover effect for back button */
+.hover-text-dark:hover {
+  color: #212529 !important;
+}
+
+/* Rounded utilities for Bootstrap 5 beta */
+.rounded-4 {
+  border-radius: 0.5rem !important;
+}
+
+/* Card shadow enhancement */
+.card.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* Form input icon spacing */
+.form-control.ps-5 {
+  padding-left: 2.5rem !important;
+}
+.form-control.pe-5 {
+  padding-right: 2.5rem !important;
+}
+
+/* Button group radio styling */
+.btn-group .btn-check + .btn {
+  border-radius: 0 !important;
+}
+.btn-group .btn-check:first-child + .btn {
+  border-top-left-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+}
+.btn-group .btn-check:last-child + .btn {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+}
+
+/* Badge circle for alert */
+.badge.rounded-circle {
+  border-radius: 50% !important;
+  min-width: 6px;
+  min-height: 6px;
+  padding: 0;
+}
+
+/* Position utilities */
+.position-relative { position: relative !important; }
+.position-absolute { position: absolute !important; }
+.top-0 { top: 0 !important; }
+.end-0 { right: 0 !important; }
+.bottom-0 { bottom: 0 !important; }
+.start-0 { left: 0 !important; }
+.translate-middle-y { transform: translateY(-50%) !important; }
+.translate-middle { transform: translate(-50%, -50%) !important; }
+
+/* Blur effect for decoration */
+[style*="blur"] {
+  -webkit-backdrop-filter: blur(100px);
+  backdrop-filter: blur(100px);
+}
+
+/* Z-index utility */
+.z-1 { z-index: 1 !important; }
+
+/* ===== Custom CSS untuk PublicVerify Enhanced ===== */
+
+/* Background opacity utilities */
+.bg-opacity-5 { --bs-bg-opacity: 0.05 !important; }
+.bg-opacity-10 { --bs-bg-opacity: 0.1 !important; }
+.bg-opacity-25 { --bs-bg-opacity: 0.25 !important; }
+
+/* Border subtle variants */
+.border-primary-subtle { border-color: rgba(13, 110, 253, 0.25) !important; }
+.border-success-subtle { border-color: rgba(25, 135, 84, 0.25) !important; }
+.border-danger-subtle { border-color: rgba(220, 53, 69, 0.25) !important; }
+.border-light-subtle { border-color: rgba(248, 249, 250, 0.5) !important; }
+
+/* Hover effects */
+.hover-shadow { transition: all 0.2s ease-in-out; }
+.hover-shadow:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; 
+}
+.hover-shadow-lg:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Scale transition */
+.scale-102 { transform: scale(1.02); }
+.transition-all { transition: all 0.2s ease-in-out; }
+
+/* Hover text color */
+.hover-text-dark:hover { color: #212529 !important; }
+
+/* Rounded utilities for Bootstrap 5 beta */
+.rounded-3 { border-radius: 0.3rem !important; }
+.rounded-4 { border-radius: 0.5rem !important; }
+
+/* Cursor pointer */
+.cursor-pointer { cursor: pointer !important; }
+
+/* Pulse animation for status indicator */
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Fade in animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+.animate-fade-in-up { animation: fadeIn 0.4s ease-out; }
+
+/* Badge enhancements */
+.badge { font-weight: 500; letter-spacing: 0.02em; }
+.badge.border { border-width: 1px !important; }
+
+/* Card shadow enhancement */
+.card.shadow-lg { box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12) !important; }
+
+/* Button shadow */
+.btn.shadow-lg { box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35) !important; }
+.btn-dark.shadow-lg { box-shadow: 0 4px 14px rgba(33, 37, 41, 0.35) !important; }
+
+/* Text break for long certificate IDs */
+.text-break { word-break: break-all; }
+
+/* Disabled button opacity */
+.btn.disabled, .btn:disabled { opacity: 0.75 !important; }
+
+/* Border width utility */
+.border-3 { border-width: 3px !important; }
+
+/* Shadow utilities for colored backgrounds */
+.shadow-success-subtle { box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.1) !important; }
+.shadow-danger-subtle { box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1) !important; }
+
+/* Smooth scroll behavior */
+html { scroll-behavior: smooth; }
+
+/* Focus outline enhancement */
+.btn:focus, .form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+  outline: none !important;
+}
+
+/* ===== Custom CSS untuk PublicVerify - Fixed Contrast ===== */
+
+/* Background opacity utilities */
+.bg-opacity-5 { --bs-bg-opacity: 0.05 !important; }
+.bg-opacity-10 { --bs-bg-opacity: 0.1 !important; }
+.bg-opacity-25 { --bs-bg-opacity: 0.25 !important; }
+
+/* Border subtle variants - Bootstrap 5.0.0-beta1 compatible */
+.border-primary-subtle { border-color: rgba(13, 110, 253, 0.25) !important; }
+.border-success-subtle { border-color: rgba(25, 135, 84, 0.25) !important; }
+.border-danger-subtle { border-color: rgba(220, 53, 69, 0.25) !important; }
+.border-light-subtle { border-color: rgba(248, 249, 250, 0.5) !important; }
+
+/* Hover effects */
+.hover-shadow { transition: all 0.2s ease-in-out; }
+.hover-shadow:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; 
+}
+.hover-shadow-lg:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Scale transition */
+.scale-102 { transform: scale(1.02); }
+.transition-all { transition: all 0.2s ease-in-out; }
+
+/* Hover text color */
+.hover-text-dark:hover { color: #212529 !important; }
+
+/* Rounded utilities */
+.rounded-3 { border-radius: 0.3rem !important; }
+.rounded-4 { border-radius: 0.5rem !important; }
+
+/* Cursor pointer */
+.cursor-pointer { cursor: pointer !important; }
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* Fade in animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+.animate-fade-in-up { animation: fadeIn 0.4s ease-out; }
+
+/* Badge enhancements */
+.badge { font-weight: 500; letter-spacing: 0.02em; }
+.badge.border { border-width: 1px !important; }
+
+/* Card shadow */
+.card.shadow-lg { box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12) !important; }
+
+/* Button shadow */
+.btn.shadow-lg { box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35) !important; }
+.btn-dark.shadow-lg { box-shadow: 0 4px 14px rgba(33, 37, 41, 0.35) !important; }
+
+/* Text break */
+.text-break { word-break: break-all; }
+
+/* Disabled button */
+.btn.disabled, .btn:disabled { opacity: 0.75 !important; }
+
+/* Border width */
+.border-3 { border-width: 3px !important; }
+
+/* Focus outline */
+.btn:focus, .form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+  outline: none !important;
+}
+
+/* ✅ NEW: Badge with colored icon but dark text for contrast */
+.badge.bg-opacity-10.text-dark .text-success { color: #198754 !important; }
+.badge.bg-opacity-10.text-dark .text-danger { color: #dc3545 !important; }
+
+/* ===== Custom CSS untuk PublicVerify White Version ===== */
+
+/* Border subtle variant for Bootstrap 5.0.0-beta1 */
+.border-secondary-subtle {
+  border-color: rgba(108, 117, 125, 0.25) !important;
+}
+
+/* Background opacity utility */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+/* Transition for hover effects */
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Rounded utilities */
+.rounded-3 { border-radius: 0.3rem !important; }
+.rounded-4 { border-radius: 0.5rem !important; }
+
+/* Cursor pointer */
+.cursor-pointer { cursor: pointer !important; }
+
+/* Border width utility */
+.border-3 { border-width: 3px !important; }
+
+/* Card shadow */
+.card.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Button shadow */
+.btn.shadow {
+  box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35) !important;
+}
+.btn-dark.shadow {
+  box-shadow: 0 4px 14px rgba(33, 37, 41, 0.35) !important;
+}
+
+/* Text break for long IDs */
+.text-break { word-break: break-all; }
+
+/* Disabled button */
+.btn.disabled, .btn:disabled {
+  opacity: 0.75 !important;
+  cursor: not-allowed;
+}
+
+/* ===== Custom CSS untuk ParticipantDashboard Bootstrap 5 ===== */
+
+/* Background opacity utilities */
+.bg-opacity-10 { --bs-bg-opacity: 0.1 !important; }
+
+/* Border subtle variants */
+.border-success-subtle { border-color: rgba(25, 135, 84, 0.25) !important; }
+.border-danger-subtle { border-color: rgba(220, 53, 69, 0.25) !important; }
+.border-primary-subtle { border-color: rgba(13, 110, 253, 0.25) !important; }
+
+/* Hover effect for cards */
+.transition-all { transition: all 0.2s ease-in-out; }
+.hover-shadow { cursor: pointer; }
+.hover-shadow:hover { 
+  transform: translateY(-4px); 
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important; 
+}
+
+/* Sticky header fix */
+.sticky-top { 
+  position: sticky; 
+  top: 0; 
+  z-index: 1020; 
+  background-color: #fff;
+}
+
+/* Card shadow enhancement */
+.card.shadow-sm { 
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important; 
+}
+
+/* Text break for long certificate IDs */
+.text-break { word-break: break-all; }
+
+/* Gap utilities for Bootstrap 5 beta */
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+
+/* Rounded utilities */
+.rounded-3 { border-radius: 0.3rem !important; }
+
+/* Badge styling */
+.badge { font-weight: 500; }
+.badge.border { border-width: 1px !important; }
+
+/* Disabled button opacity */
+.btn.disabled, .btn:disabled { 
+  opacity: 0.65 !important; 
+  cursor: not-allowed; 
+}
+
+/* Smooth transitions */
+.btn, .card { 
+  transition: all 0.2s ease-in-out; 
+}
+
+/* Header shadow */
+header.shadow-sm { 
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important; 
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:not(.opacity-75):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Sticky header background fix */
+.sticky-top {
+  background-color: #fff !important;
+  z-index: 1020;
+}
+
+/* Badge transition */
+.badge {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Disabled button style */
+.btn.disabled, .btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed;
+}
+
+/* Font monospace fallback */
+.font-monospace {
+  font-family: var(--bs-font-monospace) !important;
+}
+
+/* Text break for long IDs */
+.text-break {
+  word-break: break-all;
+}
