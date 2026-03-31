@@ -1,72 +1,75 @@
-`python -m uvicorn app.main:app --reload`
+📜 Certificate System
 
-# Getting Started with Create React App
+Sistem ini merupakan aplikasi untuk mengelola dan memverifikasi sertifikat digital menggunakan backend Python dan frontend JavaScript.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚀 Tech Stack
+Backend: Python (FastAPI)
+Frontend: React.js
+Database: MySQL (phpMyAdmin)
+⚙️ Persiapan Awal
+1. Clone Repository
+git clone https://github.com/username/certificate_system.git
+cd certificate_system
+🐍 Setup Backend
+1. Buat Virtual Environment
+python -m venv venv
+2. Aktifkan Virtual Environment
+venv\Scripts\activate
+3. Install Dependencies
+pip install -r requirements.txt
+🗄️ Setup Database (MySQL via phpMyAdmin)
+Gunakan MySQL di port: 3307/3306
+Buat database baru dengan nama:
+certificate_system
 
-## Available Scripts
+Pastikan konfigurasi database di project kamu sudah sesuai:
 
-In the project directory, you can run:
+host: localhost
+port: 3307 (sesuai MySQL kamu)
+user: (sesuai MySQL kamu)
+password: (sesuai MySQL kamu)
+database: certificate_system
+🔄 Reset & Inisialisasi Database
 
-### `npm start`
+Jalankan perintah berikut untuk setup ulang database:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+python -m app.reset_mysql
+▶️ Menjalankan Backend
+python -m uvicorn app.main:app --reload
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Backend akan berjalan di:
 
-### `npm test`
+http://127.0.0.1:8000
+💻 Menjalankan Frontend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Masuk ke folder frontend (jika terpisah):
 
-### `npm run build`
+cd frontend
+npm install
+npm start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Frontend akan berjalan di:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+http://localhost:3000
+🔀 Menjalankan Backend & Frontend Bersamaan
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Buka 2 terminal:
 
-### `npm run eject`
+Terminal 1 (Backend):
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+venv\Scripts\activate
+python -m uvicorn app.main:app --reload
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Terminal 2 (Frontend):
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+cd frontend
+npm start
+📌 Catatan Penting
+Pastikan MySQL berjalan di port 3307/3306
+Gunakan phpMyAdmin untuk mengelola database
+Pastikan virtual environment aktif sebelum menjalankan backend
+Jika terjadi error dependency, ulangi install:
+pip install -r requirements.txt
+✅ Selesai
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Sekarang sistem siap digunakan untuk mengelola dan memverifikasi sertifikat 🎉
