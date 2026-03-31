@@ -41,8 +41,6 @@ def get_my_certificates(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_participant)
 ):
-    """UC07: Melihat Sertifikat Miliknya"""
-    
     certificates = db.query(Certificate).filter(
         Certificate.participant_id == current_user.id
     ).order_by(Certificate.created_at.desc()).all()
@@ -67,8 +65,6 @@ def get_certificate_detail(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_participant)
 ):
-    """Get detailed certificate info"""
-    
     cert = db.query(Certificate).filter(
         Certificate.certificate_id == certificate_id,
         Certificate.participant_id == current_user.id
@@ -96,8 +92,6 @@ def download_certificate(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_participant)
 ):
-    """UC08: Mendownload Sertifikat"""
-    
     from fastapi.responses import FileResponse
     import os
     
@@ -112,11 +106,11 @@ def download_certificate(
     if cert.is_revoked:
         raise HTTPException(status_code=403, detail="This certificate has been revoked")
     
-    if not os.path.exists(cert.certificate_image_path):
+    if not os.path.exists(cert.final_certificate_path):
         raise HTTPException(status_code=404, detail="Certificate file not found")
     
     return FileResponse(
-        cert.certificate_image_path,
+        cert.final_certificate_path,
         media_type="image/png",
         filename=f"{certificate_id}_certificate.png"
     )
@@ -125,7 +119,6 @@ def download_certificate(
 def get_profile(
     current_user: User = Depends(get_current_participant)
 ):
-    """Get participant profile"""
     return {
         "id": current_user.id,
         "username": current_user.username,

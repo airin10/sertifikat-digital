@@ -24,7 +24,7 @@ const ParticipantDashboard = () => {
       const response = await participantApi.getMyCertificates();
       setCertificates(response.data);
     } catch (error) {
-      console.error('Failed to fetch certificates:', error);
+      console.error('Gagal memuat sertifikat:', error);
       setError('Gagal memuat sertifikat. Silakan coba lagi.');
     } finally {
       setLoading(false);
@@ -40,15 +40,15 @@ const ParticipantDashboard = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${certificateId}_certificate.png`;
+      a.download = `${certificateId}_sertifikat.png`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
       
     } catch (error) {
-      console.error('Download failed:', error);
-      alert('Gagal mengunduh sertifikat. Silakan coba lagi.');
+      console.error('Gagal mengunduh sertifikat:', error);
+      alert('Gagal mengunduh sertifikat. Periksa koneksi Anda atau coba lagi nanti.');
     } finally {
       setDownloadingId(null);
     }
@@ -71,18 +71,23 @@ const ParticipantDashboard = () => {
     }
   };
 
-  // ✅ Helper: Warna icon yang konsisten
-  const ICON_COLORS = {
-    primary: '#0d6efd',
-    success: '#198754',
-    danger: '#dc3545',
-    secondary: '#6c757d',
+  // ✅ Helper: Warna icon yang KONTRAS dan selalu terlihat
+  const ICON = {
+    primary: '#0d6efd',      // Biru Bootstrap
+    success: '#198754',      // Hijau Bootstrap
+    danger: '#dc3545',       // Merah Bootstrap
+    secondary: '#495057',    // Abu GELAP (bukan #6c757d yang terlalu terang)
+    dark: '#212529',         // Hitam Bootstrap
     white: '#ffffff'
   };
 
-  // ✅ Helper: Background dengan opacity untuk Bootstrap 5.0.0-beta1
-  const BG_WITH_OPACITY = (hex, opacity = 0.1) => 
-    `rgba(${parseInt(hex.slice(1,3), 16)}, ${parseInt(hex.slice(3,5), 16)}, ${parseInt(hex.slice(5,7), 16)}, ${opacity})`;
+  // ✅ Helper: Background rgba untuk opacity
+  const BG = (hex, opacity = 0.1) => {
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  };
 
   return (
     <div className="min-vh-100 bg-light">
@@ -93,31 +98,32 @@ const ParticipantDashboard = () => {
           <div className="d-flex align-items-center gap-3">
             <button 
               onClick={handleBack}
-              className="btn btn-link text-decoration-none text-muted p-0 d-lg-none"
+              className="btn btn-link text-decoration-none p-0 d-lg-none"
+              style={{color: ICON.secondary}}
             >
-              <ArrowLeft color={ICON_COLORS.secondary} size={20} />
+              <ArrowLeft color={ICON.secondary} size={20} />
             </button>
             <div className="bg-success rounded-3 d-flex align-items-center justify-content-center shadow-sm" 
                  style={{width: '40px', height: '40px'}}>
-              <User color={ICON_COLORS.white} size={20} />
+              <User color={ICON.white} size={20} />
             </div>
             <div>
-              <h1 className="h6 fw-bold text-dark mb-0">My Certificates</h1>
+              <h1 className="h6 fw-bold text-dark mb-0">Sertifikat Saya</h1>
               <p className="text-muted small mb-0">Selamat datang, {user?.full_name}</p>
             </div>
           </div>
           
           <div className="d-flex align-items-center gap-3">
             <span className="badge d-none d-sm-flex align-items-center gap-2 px-3 py-2" 
-                  style={{backgroundColor: BG_WITH_OPACITY('#198754'), color: ICON_COLORS.success, border: '1px solid rgba(25,135,84,0.25)'}}>
-              <User color={ICON_COLORS.success} size={14} /> Participant
+                  style={{backgroundColor: BG('#198754'), color: ICON.success, border: '1px solid rgba(25,135,84,0.25)'}}>
+              <User color={ICON.success} size={14} /> Peserta
             </span>
             <button
               onClick={logout}
               className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2"
             >
-              <LogOut color={ICON_COLORS.danger} size={16} />
-              <span className="d-none d-sm-inline">Logout</span>
+              <LogOut color={ICON.danger} size={16} />
+              <span className="d-none d-sm-inline">Keluar</span>
             </button>
           </div>
         </div>
@@ -137,8 +143,8 @@ const ParticipantDashboard = () => {
                     <p className="h4 fw-bold text-dark mb-0">{certificates.length}</p>
                   </div>
                   <div className="rounded-3 d-flex align-items-center justify-content-center" 
-                       style={{width: '48px', height: '48px', backgroundColor: BG_WITH_OPACITY('#0d6efd')}}>
-                    <FileText color={ICON_COLORS.primary} size={24} />
+                       style={{width: '48px', height: '48px', backgroundColor: BG('#0d6efd')}}>
+                    <FileText color={ICON.primary} size={24} />
                   </div>
                 </div>
               </div>
@@ -156,8 +162,8 @@ const ParticipantDashboard = () => {
                     </p>
                   </div>
                   <div className="rounded-3 d-flex align-items-center justify-content-center" 
-                       style={{width: '48px', height: '48px', backgroundColor: BG_WITH_OPACITY('#198754')}}>
-                    <CheckCircle color={ICON_COLORS.success} size={24} />
+                       style={{width: '48px', height: '48px', backgroundColor: BG('#198754')}}>
+                    <CheckCircle color={ICON.success} size={24} />
                   </div>
                 </div>
               </div>
@@ -175,8 +181,8 @@ const ParticipantDashboard = () => {
                     </p>
                   </div>
                   <div className="rounded-3 d-flex align-items-center justify-content-center" 
-                       style={{width: '48px', height: '48px', backgroundColor: BG_WITH_OPACITY('#dc3545')}}>
-                    <AlertCircle color={ICON_COLORS.danger} size={24} />
+                       style={{width: '48px', height: '48px', backgroundColor: BG('#dc3545')}}>
+                    <AlertCircle color={ICON.danger} size={24} />
                   </div>
                 </div>
               </div>
@@ -188,15 +194,15 @@ const ParticipantDashboard = () => {
         {loading ? (
           <div className="text-center py-5">
             <div className="spinner-border text-primary mb-3" role="status">
-              <span className="visually-hidden">Loading...</span>
+              <span className="visually-hidden">Memuat...</span>
             </div>
             <p className="text-muted">Memuat sertifikat...</p>
           </div>
         ) : error ? (
           <div className="text-center py-5">
             <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style={{width: '64px', height: '64px', backgroundColor: BG_WITH_OPACITY('#dc3545')}}>
-              <AlertCircle color={ICON_COLORS.danger} size={32} />
+                 style={{width: '64px', height: '64px', backgroundColor: BG('#dc3545')}}>
+              <AlertCircle color={ICON.danger} size={32} />
             </div>
             <h3 className="h5 fw-bold text-dark mb-2">Terjadi Kesalahan</h3>
             <p className="text-muted mb-4">{error}</p>
@@ -212,12 +218,12 @@ const ParticipantDashboard = () => {
             <div className="card-body text-center p-5">
               <div className="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
                    style={{width: '80px', height: '80px'}}>
-                <FileText color={ICON_COLORS.secondary} size={40} />
+                <FileText color={ICON.secondary} size={40} />
               </div>
               <h3 className="h5 fw-bold text-dark mb-2">Belum Ada Sertifikat</h3>
               <p className="text-muted mb-4">
                 Anda belum memiliki sertifikat yang terdaftar dalam sistem. 
-                Hubungi admin untuk informasi lebih lanjut.
+                Silakan hubungi administrator untuk informasi lebih lanjut.
               </p>
             </div>
           </div>
@@ -227,25 +233,25 @@ const ParticipantDashboard = () => {
               <div className="col-12 col-md-6 col-lg-4" key={cert.id}>
                 <div className={`card h-100 border-0 shadow-sm ${
                   cert.is_revoked ? 'opacity-75' : ''
-                }`} style={{borderLeft: `4px solid ${cert.is_revoked ? ICON_COLORS.danger : ICON_COLORS.primary}`}}>
+                }`} style={{borderLeft: `4px solid ${cert.is_revoked ? ICON.danger : ICON.primary}`}}>
                   <div className="card-body p-4">
                     
                     {/* Card Header */}
                     <div className="d-flex align-items-start justify-content-between mb-3">
                       <div className="rounded-3 d-flex align-items-center justify-content-center" 
-                           style={{width: '48px', height: '48px', backgroundColor: cert.is_revoked ? BG_WITH_OPACITY('#dc3545') : BG_WITH_OPACITY('#0d6efd')}}>
-                        <FileText color={cert.is_revoked ? ICON_COLORS.danger : ICON_COLORS.primary} size={24} />
+                           style={{width: '48px', height: '48px', backgroundColor: cert.is_revoked ? BG('#dc3545') : BG('#0d6efd')}}>
+                        <FileText color={cert.is_revoked ? ICON.danger : ICON.primary} size={24} />
                       </div>
                       
                       {cert.is_revoked ? (
                         <span className="badge px-3 py-2" 
-                              style={{backgroundColor: BG_WITH_OPACITY('#dc3545'), color: ICON_COLORS.danger, border: '1px solid rgba(220,53,69,0.25)'}}>
-                          <AlertCircle color={ICON_COLORS.danger} size={12} className="me-1" /> Dicabut
+                              style={{backgroundColor: BG('#dc3545'), color: ICON.danger, border: '1px solid rgba(220,53,69,0.25)'}}>
+                          <AlertCircle color={ICON.danger} size={12} className="me-1" /> Dicabut
                         </span>
                       ) : (
                         <span className="badge px-3 py-2" 
-                              style={{backgroundColor: BG_WITH_OPACITY('#198754'), color: ICON_COLORS.success, border: '1px solid rgba(25,135,84,0.25)'}}>
-                          <CheckCircle color={ICON_COLORS.success} size={12} className="me-1" /> Aktif
+                              style={{backgroundColor: BG('#198754'), color: ICON.success, border: '1px solid rgba(25,135,84,0.25)'}}>
+                          <CheckCircle color={ICON.success} size={12} className="me-1" /> Aktif
                         </span>
                       )}
                     </div>
@@ -258,24 +264,24 @@ const ParticipantDashboard = () => {
                     {/* Details */}
                     <div className="mb-3">
                       <div className="d-flex align-items-center gap-2 text-muted small mb-2">
-                        <Building color={ICON_COLORS.secondary} size={14} />
+                        <Building color={ICON.secondary} size={14} />
                         <span className="text-dark">{cert.institution || '-'}</span>
                       </div>
                       <div className="d-flex align-items-center gap-2 text-muted small">
-                        <Calendar color={ICON_COLORS.secondary} size={14} />
+                        <Calendar color={ICON.secondary} size={14} />
                         <span className="text-dark">{formatDate(cert.issued_date)}</span>
                       </div>
                     </div>
                     
                     {/* Certificate ID */}
                     <div className="p-3 bg-light rounded-3 mb-4">
-                      <p className="text-muted small mb-1">Certificate ID</p>
+                      <p className="text-muted small mb-1">ID Sertifikat</p>
                       <p className="text-dark small font-monospace mb-0 text-break">
                         {cert.certificate_id}
                       </p>
                     </div>
                     
-                    {/* Actions */}
+                    {/* Actions - ✅ FIXED: Eye icon visibility */}
                     <div className="d-flex gap-2">
                       <button
                         onClick={() => downloadCertificate(cert.certificate_id)}
@@ -291,22 +297,40 @@ const ParticipantDashboard = () => {
                         {downloadingId === cert.certificate_id ? (
                           <>
                             <span className="spinner-border spinner-border-sm" role="status" />
-                            <small>Downloading...</small>
+                            <small>Mengunduh...</small>
                           </>
                         ) : (
                           <>
-                            <Download color={ICON_COLORS.white} size={16} />
-                            <small>Download</small>
+                            <Download color={ICON.white} size={16} />
+                            <small>Unduh</small>
                           </>
                         )}
                       </button>
                       
+                      {/* ✅ FIX: Eye button dengan warna yang KONTRAS */}
                       <Link
                         to={`/participant/certificates/${cert.certificate_id}`}
-                        className="btn btn-outline-secondary"
-                        title="Lihat Detail"
+                        className="btn btn-outline-primary view-btn"
+                        title="Lihat detail sertifikat"
+                        style={{
+                          borderColor: ICON.primary,
+                          color: ICON.primary,
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = ICON.primary;
+                          e.currentTarget.style.color = ICON.white;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = ICON.primary;
+                        }}
                       >
-                        <Eye color={ICON_COLORS.secondary} size={16} />
+                        <Eye color={ICON.primary} size={16} 
+                             style={{transition: 'color 0.2s ease'}}
+                             onMouseEnter={(e) => e.currentTarget.setAttribute('color', ICON.white)}
+                             onMouseLeave={(e) => e.currentTarget.setAttribute('color', ICON.primary)}
+                        />
                       </Link>
                     </div>
                   </div>

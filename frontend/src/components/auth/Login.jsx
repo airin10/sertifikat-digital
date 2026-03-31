@@ -26,20 +26,11 @@ const Login = () => {
         navigate('/participant/dashboard');
       }
     } catch (err) {
-      setError('Username atau password salah');
+      setError('Terjadi kesalahan. Silakan coba lagi');
     } finally {
       setLoading(false);
     }
   };
-
-  // const handleBack = () => {
-  //   // Kembali ke halaman sebelumnya atau home
-  //   if (window.history.length > 1) {
-  //     navigate(-1);
-  //   } else {
-  //     navigate('/');
-  //   }
-  // };
 
   return (
     <div className="min-vh-100 bg-light d-flex align-items-center justify-content-center px-4 position-relative overflow-hidden">
@@ -51,15 +42,6 @@ const Login = () => {
            style={{width: '384px', height: '384px', transform: 'translate(-25%, 25%)', filter: 'blur(100px)', opacity: '0.5'}} />
 
       <div className="w-100" style={{maxWidth: '448px'}} >
-        
-        {/* Back Button
-        <button 
-          onClick={handleBack}
-          className="btn btn-link text-decoration-none text-muted d-flex align-items-center gap-2 mb-4 p-0 hover-text-dark"
-        >
-          <ArrowLeft size={16} />
-          <span className="small fw-medium">Kembali</span>
-        </button> */}
 
         {/* Logo & Title */}
         <div className="text-center mb-5">
@@ -96,7 +78,7 @@ const Login = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Masukkan username"
+                  placeholder="Masukkan nama pengguna"
                   className="form-control form-control-lg bg-light border"
                   required
                 />
@@ -136,7 +118,7 @@ const Login = () => {
                 {loading ? (
                   <span className="d-flex align-items-center justify-content-center gap-2">
                     <span className="spinner-border spinner-border-sm" role="status" />
-                    Menghubungkan...
+                    Sedang Masuk...
                   </span>
                 ) : (
                   'Masuk ke Akun'
@@ -146,12 +128,12 @@ const Login = () => {
 
             {/* Links Section */}
             <div className="mt-5 text-center">
-              <p className="small text-muted mb-2">
+              {/* <p className="small text-muted mb-2">
                 Belum punya akun?{' '}
                 <Link to="/register" className="text-primary fw-bold text-decoration-none">
                   Daftar sekarang
                 </Link>
-              </p>
+              </p> */}
               <p className="small text-muted mb-0">
                 Verifikasi publik?{' '}
                 <a href="/verify" className="text-dark fw-semibold text-decoration-none">

@@ -1484,3 +1484,259 @@ header.shadow-sm {
 .text-break {
   word-break: break-all;
 }
+
+/* ===== Custom CSS untuk ParticipantDashboard Enhanced ===== */
+
+/* Badge border subtle variants */
+.border-success-subtle { border-color: rgba(25, 135, 84, 0.25) !important; }
+.border-danger-subtle { border-color: rgba(220, 53, 69, 0.25) !important; }
+.border-primary-subtle { border-color: rgba(13, 110, 253, 0.25) !important; }
+
+/* Card shadow enhancement */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Sticky header fix */
+.sticky-top {
+  z-index: 1020;
+  background-color: #fff !important;
+}
+
+/* Font monospace fallback */
+.font-monospace {
+  font-family: var(--bs-font-monospace) !important;
+}
+
+/* Text break for long IDs */
+.text-break {
+  word-break: break-all;
+}
+
+/* Gap utilities for Bootstrap 5 beta */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+
+/* Rounded utilities */
+.rounded-3 { border-radius: 0.3rem !important; }
+
+/* View button hover effect (fallback if JS doesn't work) */
+.view-btn:hover {
+  background-color: #0d6efd !important;
+  color: #fff !important;
+}
+.view-btn:hover svg {
+  stroke: #fff !important;
+}
+
+/* Disabled button style */
+.btn.disabled, .btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed;
+}
+
+/* Smooth transitions */
+.btn, .badge, .card {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Card hover lift effect */
+.card:not(.opacity-75):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ===== Custom CSS untuk CertificateDetail Bootstrap 5 ===== */
+
+/* Font monospace fallback */
+.font-monospace {
+  font-family: var(--bs-font-monospace) !important;
+}
+
+/* Text break for long IDs */
+.text-break {
+  word-break: break-all;
+}
+
+/* Card shadow enhancement */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Sticky header fix */
+.sticky-top {
+  z-index: 1020;
+  background-color: #fff !important;
+}
+
+/* Gap utilities for Bootstrap 5 beta */
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+
+/* Aspect ratio fallback (Bootstrap 5.0.0-beta1 doesn't have aspect-ratio utility) */
+[style*="aspect-ratio"] {
+  position: relative;
+}
+[style*="aspect-ratio"]::before {
+  content: "";
+  display: block;
+  padding-top: 75%; /* 4:3 aspect ratio */
+}
+[style*="aspect-ratio"] > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Object fit for images */
+[style*="object-fit"] {
+  object-fit: contain !important;
+}
+
+/* Disabled button style */
+.btn.disabled, .btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed;
+}
+
+/* Smooth transitions */
+.btn, .card {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+}
+
+/* Alert spacing */
+.alert {
+  border-width: 1px !important;
+}
+
+/* ===== Custom CSS untuk PublicVerify Enhanced Bootstrap 5 ===== */
+
+/* Rounded utilities for Bootstrap 5.0.0-beta1 */
+.rounded-3 { border-radius: 0.3rem !important; }
+.rounded-4 { border-radius: 0.5rem !important; }
+
+/* Border subtle variant */
+.border-secondary-subtle { border-color: rgba(108, 117, 125, 0.25) !important; }
+
+/* Transition utilities */
+.transition-all { transition: all 0.2s ease-in-out; }
+
+/* Card shadow enhancement */
+.card.shadow-lg { box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12) !important; }
+.card.shadow { box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important; }
+
+/* Button shadow */
+.btn.shadow { box-shadow: 0 4px 14px rgba(13, 110, 253, 0.35) !important; }
+.btn-dark.shadow { box-shadow: 0 4px 14px rgba(33, 37, 41, 0.35) !important; }
+
+/* Disabled button */
+.btn.disabled, .btn:disabled { opacity: 0.65 !important; cursor: not-allowed; }
+
+/* Font monospace fallback */
+.font-monospace { font-family: var(--bs-font-monospace) !important; }
+
+/* Text break for long IDs */
+.text-break { word-break: break-all; }
+
+/* Gap utilities for Bootstrap 5 beta */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+
+/* Badge styling */
+.badge { font-weight: 500; letter-spacing: 0.02em; }
+
+/* Alert customization */
+.alert { border-width: 1px !important; }
+
+/* Cursor pointer */
+.cursor-pointer { cursor: pointer !important; }
+
+/* Hover lift effect for cards */
+.card:hover {
+  transform: translateY(-4px);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Subtle background for detail cards */
+.bg-light-subtle { background-color: #f8f9fa !important; }
+
+/* Pill badge */
+.rounded-pill { border-radius: 50rem !important; }
+
+/* Backdrop blur fallback (for browsers that don't support it) */
+.backdrop-blur-sm {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Animation fallbacks */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-bounce { animation: bounce 2s infinite; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+
+/* ===== Custom CSS untuk PublicVerify Simple ===== */
+
+/* Border subtle variant (Bootstrap 5.0.0-beta1 doesn't have this) */
+.border-secondary-subtle {
+  border-color: rgba(108, 117, 125, 0.25) !important;
+}
+
+/* Font monospace fallback */
+.font-monospace {
+  font-family: var(--bs-font-monospace) !important;
+}
+
+/* Text break for long IDs */
+.text-break {
+  word-break: break-all;
+}
+
+/* Card shadow */
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+}
+
+/* Disabled button */
+.btn.disabled, .btn:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed;
+}
+
+/* Rounded utilities */
+.rounded-3 { border-radius: 0.3rem !important; }
+
+/* Gap utilities (Bootstrap 5 beta already has these) */
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+
+/* Cursor pointer */
+.cursor-pointer { cursor: pointer !important; }

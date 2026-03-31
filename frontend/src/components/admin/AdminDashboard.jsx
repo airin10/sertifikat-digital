@@ -31,7 +31,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // ✅ Helper: Warna icon yang konsisten untuk Bootstrap 5.0.0-beta1
   const ICON_COLORS = {
     primary: '#0d6efd',
     secondary: '#6c757d',
@@ -41,7 +40,6 @@ const AdminDashboard = () => {
     white: '#ffffff'
   };
 
-  // ✅ Helper: Background rgba untuk opacity (karena bg-opacity-* tidak ada di Bootstrap 5 beta)
   const BG_RGBA = (hex, opacity = 0.1) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -51,40 +49,36 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-vh-100 bg-light">
-      {/* Header */}
       <header className="bg-white border-bottom shadow-sm">
         <div className="container px-4 py-3 d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center gap-3">
             <div className="bg-primary rounded-3 d-flex align-items-center justify-content-center" 
                  style={{width: '40px', height: '40px'}}>
-              {/* ✅ FIX: Gunakan color prop explicit */}
               <CheckCircle color={ICON_COLORS.white} size={24} />
             </div>
             <div>
               <h1 className="h6 fw-bold text-dark mb-0">Admin Dashboard</h1>
-              <p className="text-muted small mb-0">Welcome, {user?.full_name}</p>
+              <p className="text-muted small mb-0">Selamat Datang, {user?.full_name}</p>
             </div>
           </div>
           <button
             onClick={logout}
             className="btn btn-link text-decoration-none text-muted d-flex align-items-center gap-2 p-0"
           >
-            {/* ✅ FIX: Gunakan color prop explicit */}
             <LogOut color={ICON_COLORS.secondary} size={18} />
-            <span className="small fw-medium">Logout</span>
+            <span className="small fw-medium">Keluar</span>
           </button>
         </div>
       </header>
 
       <div className="container py-4 py-md-5">
         
-        {/* Stats Grid */}
         {stats && (
           <div className="row g-4 mb-5">
             <div className="col-12 col-md-6 col-lg-3">
               <StatCard
                 icon={Users}
-                label="Total Participants"
+                label="Jumlah Peserta"
                 value={stats.total_participants}
                 color="primary"
                 iconColor={ICON_COLORS.primary}
@@ -94,7 +88,7 @@ const AdminDashboard = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <StatCard
                 icon={FileText}
-                label="Total Certificates"
+                label="Jumlah Sertifikat"
                 value={stats.total_certificates}
                 color="purple"
                 iconColor={ICON_COLORS.purple}
@@ -104,7 +98,7 @@ const AdminDashboard = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <StatCard
                 icon={CheckCircle}
-                label="Active Certificates"
+                label="Sertifikat Aktif"
                 value={stats.active_certificates}
                 color="success"
                 iconColor={ICON_COLORS.success}
@@ -114,7 +108,7 @@ const AdminDashboard = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <StatCard
                 icon={XCircle}
-                label="Revoked"
+                label="Dicabut"
                 value={stats.revoked_certificates}
                 color="danger"
                 iconColor={ICON_COLORS.danger}
@@ -124,7 +118,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Quick Actions */}
         <div className="row g-4 mb-5">
           <div className="col-md-4">
             <Link
@@ -132,13 +125,12 @@ const AdminDashboard = () => {
               className="card h-100 border-0 shadow-sm text-decoration-none text-dark"
             >
               <div className="card-body p-4">
-                {/* ✅ FIX: Gunakan inline style untuk background + color prop untuk icon */}
                 <div className="rounded-3 d-inline-flex align-items-center justify-content-center mb-3" 
                      style={{width: '48px', height: '48px', backgroundColor: BG_RGBA('#0d6efd')}}>
                   <Users color={ICON_COLORS.primary} size={24} />
                 </div>
-                <h3 className="h6 fw-bold text-dark mb-2">Kelola Participant</h3>
-                <p className="text-muted small mb-0">Tambah, edit, atau hapus data participant</p>
+                <h3 className="h6 fw-bold text-dark mb-2">Kelola Peserta</h3>
+                <p className="text-muted small mb-0">Tambah, edit, atau hapus data peserta</p>
               </div>
             </Link>
           </div>
@@ -176,7 +168,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Certificates */}
         {stats?.recent_certificates && (
           <div className="card border-0 shadow-sm">
             <div className="card-header bg-white border-bottom py-3">
@@ -211,7 +202,6 @@ const StatCard = ({ icon: Icon, label, value, iconColor, bgColor }) => {
             <p className="text-muted small mb-1">{label}</p>
             <p className="h4 fw-bold text-dark mb-0">{value}</p>
           </div>
-          {/* ✅ FIX: Gunakan inline style untuk background + color prop untuk icon */}
           <div className="rounded-3 d-flex align-items-center justify-content-center" 
                style={{width: '48px', height: '48px', backgroundColor: bgColor}}>
             <Icon color={iconColor} size={24} />

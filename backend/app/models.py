@@ -20,7 +20,6 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
-    # Relationships
     certificates = relationship("Certificate", back_populates="participant", foreign_keys="Certificate.participant_id")
     created_certificates = relationship("Certificate", back_populates="creator", foreign_keys="Certificate.created_by")
 
@@ -42,18 +41,19 @@ class Certificate(Base):
     expiry_date = Column(String(20), nullable=True)
     
     # OCR & Hash
-    text_hash = Column(String(64), index=True)
+    text_hash = Column(String(128), index=True)
     raw_text = Column(Text)
     
     # Crypto
     message = Column(Text)
     signature = Column(Text)
     public_key = Column(Text)
+    original_path = Column(String(255), nullable=True)
     
     # QR & Files
     qr_payload = Column(JSON)
     qr_image_path = Column(String(255))
-    certificate_image_path = Column(String(255))
+    final_certificate_path = Column(String(255))
     template_path = Column(String(255))
     
     # QR Position
@@ -79,67 +79,9 @@ class VerificationLog(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     certificate_id = Column(String(50), index=True)
-    text_hash = Column(String(64))
+    text_hash = Column(String(128))
     verification_result = Column(Boolean)
     ip_address = Column(String(45))
     user_agent = Column(String(255))
     verified_at = Column(DateTime(timezone=True), server_default=func.now())
     details = Column(JSON)
-
-# from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, JSON
-# from sqlalchemy.sql import func
-# from app.database import Base
-
-# class Certificate(Base):
-#     __tablename__ = "certificates"
-    
-#     id = Column(Integer, primary_key=True, index=True)
-#     certificate_id = Column(String(50), unique=True, index=True)
-    
-#     # Data penerima
-#     recipient_name = Column(String(100), nullable=False)
-#     recipient_email = Column(String(100), nullable=False, index=True)
-#     institution = Column(String(100))
-#     course_name = Column(String(100))
-#     issued_date = Column(String(20))
-    
-#     # OCR & Hash
-#     text_hash = Column(String(64), index=True)
-#     raw_text = Column(Text)
-    
-#     # Crypto - TAMBAHKAN message
-#     message = Column(Text)  # ✅ Simpan message yang di-sign!
-#     signature = Column(Text)
-#     public_key = Column(Text)
-    
-#     # QR Code
-#     qr_payload = Column(JSON)
-#     qr_image_path = Column(String(255))
-    
-#     # File paths
-#     template_path = Column(String(255))
-#     final_certificate_path = Column(String(255))
-    
-#     # QR Position
-#     qr_x = Column(Integer, default=100)
-#     qr_y = Column(Integer, default=100)
-#     qr_size = Column(Integer, default=150)
-    
-#     # Metadata
-#     created_at = Column(DateTime(timezone=True), server_default=func.now())
-#     is_revoked = Column(Boolean, default=False)
-#     revoked_at = Column(DateTime(timezone=True), nullable=True)
-
-#     def to_dict(self):
-#         return {
-#             'id': self.id,
-#             'certificate_id': self.certificate_id,
-#             'recipient_name': self.recipient_name,
-#             'recipient_email': self.recipient_email,
-#             'institution': self.institution,
-#             'course_name': self.course_name,
-#             'issued_date': self.issued_date,
-#             'text_hash': self.text_hash,
-#             'created_at': self.created_at.isoformat() if self.created_at else None,
-#             'is_revoked': self.is_revoked
-#         }

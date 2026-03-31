@@ -5,14 +5,11 @@ import os
 from typing import Dict, Union, Optional
 
 class ImageProcessor:
-    """Processor untuk manipulasi gambar sertifikat"""
-    
     def __init__(self):
         self.upload_folder = "uploads/temp"
         os.makedirs(self.upload_folder, exist_ok=True)
     
     def validate_image(self, image_bytes: bytes) -> Dict:
-        """Validasi file gambar"""
         try:
             img = Image.open(BytesIO(image_bytes))
             return {
@@ -41,7 +38,7 @@ class ImageProcessor:
             new_height = int(img.height * ratio)
             img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         
-        # Convert ke RGB untuk preview (browser compatibility)
+        # Convert ke RGB untuk preview 
         if img.mode in ('RGBA', 'P'):
             img = img.convert('RGB')
         
@@ -53,19 +50,16 @@ class ImageProcessor:
             "image": img_base64,
             "width": img.width,
             "height": img.height,
-            "original_width": original_width,    # ✅ Simpan dari awal
-            "original_height": original_height   # ✅ Simpan dari awal
+            "original_width": original_width,    
+            "original_height": original_height   
         }
     
     def _paste_qr_to_template(self, template: Image.Image, qr_image: Image.Image, 
                            position: Dict, qr_size: int) -> Image.Image:
-        """
-        Internal method: Paste QR ke template dengan validasi bounds
-        """
         # Resize QR
         qr_resized = qr_image.resize((qr_size, qr_size), Image.Resampling.LANCZOS)
         
-        # ✅ VALIDASI BOUNDS
+        # VALIDASI BOUNDS
         x = position.get('x', 0)
         y = position.get('y', 0)
         
@@ -92,9 +86,6 @@ class ImageProcessor:
     
     def add_qr_to_image(self, template_bytes: bytes, qr_bytes: bytes, 
                        position: Dict, qr_size: int) -> bytes:
-        """
-        Tambahkan QR Code ke gambar, return bytes PNG
-        """
         try:
             template = Image.open(BytesIO(template_bytes))
             qr_image = Image.open(BytesIO(qr_bytes))
@@ -114,25 +105,20 @@ class ImageProcessor:
             return output.getvalue()
             
         except Exception as e:
-            print(f"❌ Error in add_qr_to_image: {e}")
+            print(f"Error in add_qr_to_image: {e}")
             raise e
     
     def add_qr_and_get_base64(self, template_bytes: bytes, qr_bytes: bytes, 
                              position: Dict, qr_size: int) -> Optional[str]:
-        """
-        Tambahkan QR Code ke gambar, return base64 string
-        """
         try:
-            # ✅ REUSE METHOD SEBELUMNYA, TIDAK DUPLIKAT LOGIC!
             image_bytes = self.add_qr_to_image(template_bytes, qr_bytes, position, qr_size)
             return base64.b64encode(image_bytes).decode()
             
         except Exception as e:
-            print(f"❌ Error in add_qr_and_get_base64: {e}")
+            print(f"Error in add_qr_and_get_base64: {e}")
             return None
     
     def image_to_base64(self, image_bytes: Union[bytes, BytesIO]) -> str:
-        """Convert image bytes ke base64 string"""
         if isinstance(image_bytes, BytesIO):
             image_bytes = image_bytes.getvalue()
         elif not isinstance(image_bytes, bytes):
@@ -140,5 +126,4 @@ class ImageProcessor:
         
         return base64.b64encode(image_bytes).decode()
 
-# Global instance
 image_processor = ImageProcessor()

@@ -36,6 +36,23 @@ export const adminApi = {
   createCertificate: (formData) => api.post('/api/admin/certificates', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
+    createCertificateSingle: (formData) => {
+    return api.post('/api/admin/certificates/single-upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  
+  // OCR Preview 
+  previewOcr: (formData) => {
+    return api.post('/api/admin/utils/ocr-preview', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+
   deleteCertificate: (id) => api.delete(`/api/admin/certificates/${id}`),
   getDashboardStats: () => api.get('/api/admin/dashboard/stats'),
   
@@ -61,7 +78,7 @@ export const verifyApi = {
   getPublicStats: () => api.get('/api/verify/stats'),
 };
 
-// OCR API (for preview)
+// OCR API 
 export const ocrApi = {
   extractText: (formData) => api.post('/api/ocr/extract', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }

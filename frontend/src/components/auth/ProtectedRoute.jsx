@@ -17,7 +17,6 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
   }
 
   if (allowedRoles && !allowedRoles.includes(user?.role)) {
-    // Redirect ke dashboard yang sesuai jika role tidak cocok
     const redirectPath = user?.role === 'admin' ? '/admin/dashboard' : '/participant/dashboard';
     return <Navigate to={redirectPath} replace />;
   }
