@@ -212,7 +212,7 @@ const CertificateList = () => {
         {/* Error Alert */}
         {error && (
           <div className="alert alert-danger alert-dismissible fade show" role="alert">
-            <span>❌ {error}</span>
+            <span>{error}</span>
             <button 
               type="button"
               className="btn-close" 
@@ -284,14 +284,6 @@ const CertificateList = () => {
                       </td>
                       <td className="px-4 py-3 text-center">
                         <div className="d-flex justify-content-center gap-1">
-                          {/* <Link 
-                            to={`/admin/certificates/${cert.certificate_id}`}
-                            className="btn btn-sm btn-outline-primary"
-                            title="Lihat Detail"
-                          >
-                            <Eye size={14} />
-                          </Link> */}
-                          
                           <a 
                             href={`http://localhost:8000/static/certificates/${cert.certificate_id}_final.png`}
                             target="_blank"

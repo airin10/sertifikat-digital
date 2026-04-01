@@ -143,7 +143,6 @@ def delete_participant(
 class CertificateResponse(BaseModel):
     id: int
     certificate_id: str
-    # participant_id: int
     participant_name: str
     title: str
     institution: Optional[str]
@@ -154,44 +153,12 @@ class CertificateResponse(BaseModel):
     class Config:
         from_attributes = True
 
-# @router.get("/certificates", response_model=List[CertificateResponse])
-# def list_certificates(
-#     skip: int = 0,
-#     limit: int = 100,
-#     participant_id: Optional[int] = None,
-#     db: Session = Depends(get_db),
-#     current_user: User = Depends(get_current_admin)
-# ):
-#     """List semua sertifikat (admin only)"""
-#     query = db.query(Certificate)
-    
-#     if participant_id:
-#         query = query.filter(Certificate.participant_id == participant_id)
-    
-#     certificates = query.offset(skip).limit(limit).all()
-    
-#     result = []
-#     for cert in certificates:
-#         result.append({
-#             "id": cert.id,
-#             "certificate_id": cert.certificate_id,
-#             "participant_id": cert.participant_id,
-#             "participant_name": cert.participant.full_name if cert.participant else "Unknown",
-#             "title": cert.title,
-#             "institution": cert.institution,
-#             "issued_date": cert.issued_date,
-#             "is_revoked": cert.is_revoked,
-#             "created_at": cert.created_at
-#         })
-    
-#     return result
-
 @router.get("/certificates", response_model=List[CertificateResponse])
 def list_certificates(
     skip: int = 0,
     limit: int = 100,
-    search: Optional[str] = None,  # ← TAMBAHAN: Search query
-    status: Optional[str] = None,  # ← TAMBAHAN: Filter status
+    search: Optional[str] = None,  
+    status: Optional[str] = None, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
@@ -242,7 +209,7 @@ def revoke_certificate(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
-    """Cabut sertifikat (soft delete)"""
+    """Cabut sertifikat"""
     cert = db.query(Certificate).filter(
         Certificate.certificate_id == certificate_id
     ).first()
@@ -261,126 +228,126 @@ def revoke_certificate(
     
     return {"message": "Sertifikat berhasil dicabut", "certificate_id": certificate_id}
 
-@router.post("/certificates")
-async def create_certificate(
-    participant_id: int = Form(...),
-    title: str = Form(...),
-    description: str = Form(""),
-    institution: str = Form(""),
-    issued_date: str = Form(...),
-    qr_x: int = Form(100),
-    qr_y: int = Form(100),
-    qr_size: int = Form(150),
-    certificate_image: UploadFile = File(...),
-    template_file: UploadFile = File(...),
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
-):
+# @router.post("/certificates")
+# async def create_certificate(
+#     participant_id: int = Form(...),
+#     title: str = Form(...),
+#     description: str = Form(""),
+#     institution: str = Form(""),
+#     issued_date: str = Form(...),
+#     qr_x: int = Form(100),
+#     qr_y: int = Form(100),
+#     qr_size: int = Form(150),
+#     certificate_image: UploadFile = File(...),
+#     template_file: UploadFile = File(...),
+#     db: Session = Depends(get_db),
+#     current_user: User = Depends(get_current_admin)
+# ):
     
-    # Verify participant
-    participant = db.query(User).filter(
-        User.id == participant_id,
-        User.role == UserRole.PARTICIPANT
-    ).first()
+#     # Verify participant
+#     participant = db.query(User).filter(
+#         User.id == participant_id,
+#         User.role == UserRole.PARTICIPANT
+#     ).first()
     
-    if not participant:
-        raise HTTPException(status_code=404, detail="Participant not found")
+#     if not participant:
+#         raise HTTPException(status_code=404, detail="Participant not found")
     
-    cert_bytes = await certificate_image.read()
-    template_bytes = await template_file.read()
+#     cert_bytes = await certificate_image.read()
+#     template_bytes = await template_file.read()
     
-    # STEP 1: OCR → Text → Hash (SHA-512)
-    raw_text, text_hash = ocr_manager.extract_text_and_hash(cert_bytes)
+#     # STEP 1: OCR → Text → Hash (SHA-512)
+#     raw_text, text_hash = ocr_manager.extract_text_and_hash(cert_bytes)
     
-    if not raw_text:
-        raise HTTPException(400, "OCR failed to extract text from certificate")
+#     if not raw_text:
+#         raise HTTPException(400, "OCR failed to extract text from certificate")
     
-    print(f"OCR Result: {len(raw_text)} chars")
-    print(f"SHA-512 Hash: {text_hash[:40]}...")
+#     print(f"OCR Result: {len(raw_text)} chars")
+#     print(f"SHA-512 Hash: {text_hash[:40]}...")
     
-    # STEP 2: Generate cert_id
-    cert_id = f"CERT-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
-    print(f"Generated cert_id: {cert_id}")
+#     # STEP 2: Generate cert_id
+#     cert_id = f"CERT-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+#     print(f"Generated cert_id: {cert_id}")
     
-    # STEP 3: Sign dengan text_hash (string) dan cert_id
-    sig_data = crypto_manager.sign_certificate(text_hash, cert_id)
+#     # STEP 3: Sign dengan text_hash (string) dan cert_id
+#     sig_data = crypto_manager.sign_certificate(text_hash, cert_id)
     
-    print(f"Signed: {sig_data['message'][:60]}...")
+#     print(f"Signed: {sig_data['message'][:60]}...")
     
-    # STEP 4: Generate QR Code 
-    qr_payload = {
-        "v": 1,      
-        "m": "ft",    
-        "h": text_hash,     
-        "c": cert_id,       
-        "s": sig_data["signature"],
-        "p": sig_data["public_key"],
-        "a": "Ed25519",
-        "t": datetime.utcnow().isoformat()
-    }
+#     # STEP 4: Generate QR Code 
+#     qr_payload = {
+#         "v": 1,      
+#         "m": "ft",    
+#         "h": text_hash,     
+#         "c": cert_id,       
+#         "s": sig_data["signature"],
+#         "p": sig_data["public_key"],
+#         "a": "Ed25519",
+#         "t": datetime.utcnow().isoformat()
+#     }
     
-    qr_json = json.dumps(qr_payload, separators=(',', ':'))
-    qr_bytes = qr_manager.generate_qr_code(qr_json)
+#     qr_json = json.dumps(qr_payload, separators=(',', ':'))
+#     qr_bytes = qr_manager.generate_qr_code(qr_json)
 
-    # Save files
-    import os
-    qr_path = os.path.join(UPLOAD_DIR, "qrcodes", f"{cert_id}_qr.png")
-    final_path = os.path.join(UPLOAD_DIR, "certificates", f"{cert_id}_final.png")
-    template_path = os.path.join(UPLOAD_DIR, "templates", template_file.filename)
+#     # Save files
+#     import os
+#     qr_path = os.path.join(UPLOAD_DIR, "qrcodes", f"{cert_id}_qr.png")
+#     final_path = os.path.join(UPLOAD_DIR, "certificates", f"{cert_id}_final.png")
+#     template_path = os.path.join(UPLOAD_DIR, "templates", template_file.filename)
     
-    os.makedirs(os.path.dirname(qr_path), exist_ok=True)
+#     os.makedirs(os.path.dirname(qr_path), exist_ok=True)
     
-    with open(qr_path, "wb") as f:
-        f.write(qr_bytes.getvalue())
+#     with open(qr_path, "wb") as f:
+#         f.write(qr_bytes.getvalue())
     
-    with open(template_path, "wb") as f:
-        f.write(template_bytes)
+#     with open(template_path, "wb") as f:
+#         f.write(template_bytes)
     
-    # Embed QR
-    final_bytes = image_processor.add_qr_to_image(
-        template_bytes, qr_bytes.getvalue(),
-        {"x": qr_x, "y": qr_y}, qr_size
-    )
+#     # Embed QR
+#     final_bytes = image_processor.add_qr_to_image(
+#         template_bytes, qr_bytes.getvalue(),
+#         {"x": qr_x, "y": qr_y}, qr_size
+#     )
     
-    with open(final_path, "wb") as f:
-        f.write(final_bytes)
+#     with open(final_path, "wb") as f:
+#         f.write(final_bytes)
     
-    # STEP 5: Save to database
-    db_cert = Certificate(
-        certificate_id=cert_id,
-        participant_id=participant_id,
-        created_by=current_user.id,
-        title=title,
-        description=description,
-        institution=institution,
-        issued_date=issued_date,
-        text_hash=text_hash,           
-        raw_text=raw_text[:2000],       
-        message=sig_data["message"],    
-        signature=sig_data["signature"],
-        public_key=sig_data["public_key"],
-        qr_payload=qr_payload,
-        qr_image_path=qr_path,
-        final_certificate_path=final_path,
-        template_path=template_path,
-        qr_x=qr_x, qr_y=qr_y, qr_size=qr_size
-    )
+#     # STEP 5: Save to database
+#     db_cert = Certificate(
+#         certificate_id=cert_id,
+#         participant_id=participant_id,
+#         created_by=current_user.id,
+#         title=title,
+#         description=description,
+#         institution=institution,
+#         issued_date=issued_date,
+#         text_hash=text_hash,           
+#         raw_text=raw_text[:2000],       
+#         message=sig_data["message"],    
+#         signature=sig_data["signature"],
+#         public_key=sig_data["public_key"],
+#         qr_payload=qr_payload,
+#         qr_image_path=qr_path,
+#         final_certificate_path=final_path,
+#         template_path=template_path,
+#         qr_x=qr_x, qr_y=qr_y, qr_size=qr_size
+#     )
     
-    db.add(db_cert)
-    db.commit()
-    db.refresh(db_cert)
+#     db.add(db_cert)
+#     db.commit()
+#     db.refresh(db_cert)
     
-    return {
-        "success": True,
-        "certificate_id": cert_id,
-        "message": "Certificate created successfully",
-        "hash_algorithm": "SHA-512",
-        "signature_algorithm": "Ed25519",
-        "files": {
-            "certificate_url": f"/static/certificates/{cert_id}_final.png",
-            "qr_url": f"/static/qrcodes/{cert_id}_qr.png"
-        }
-    }
+#     return {
+#         "success": True,
+#         "certificate_id": cert_id,
+#         "message": "Sertifikat berhasil dibuat",
+#         "hash_algorithm": "SHA-512",
+#         "signature_algorithm": "Ed25519",
+#         "files": {
+#             "certificate_url": f"/static/certificates/{cert_id}_final.png",
+#             "qr_url": f"/static/qrcodes/{cert_id}_qr.png"
+#         }
+#     }
 
 @router.get("/dashboard/stats")
 def get_dashboard_stats(
@@ -421,7 +388,7 @@ async def create_certificate_single_upload(
     qr_x: int = Form(...),
     qr_y: int = Form(...),
     qr_size: int = Form(...),
-    certificate_image: UploadFile = File(...),  # ← SATU FILE SAJA
+    certificate_image: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
@@ -435,7 +402,7 @@ async def create_certificate_single_upload(
     """
     try:
         print(f"\n{'='*60}")
-        print(f"📝 SINGLE UPLOAD: Signing for participant {participant_id}")
+        print(f"Signing for participant {participant_id}")
         print(f"{'='*60}")
         
         # Read certificate image
@@ -465,7 +432,7 @@ async def create_certificate_single_upload(
         sig_data = crypto_manager.sign_certificate(text_hash, cert_id)
         print(f"Signed: {sig_data['message'][:60]}...")
         
-        # STEP 4: Generate QR Code (compact JSON)
+        # STEP 4: Generate QR Code
         qr_payload = {
             "v": 1,                    
             "m": "ft",                
@@ -481,7 +448,7 @@ async def create_certificate_single_upload(
         qr_bytes = qr_manager.generate_qr_code(qr_json)
         print(f"QR Code generated: {len(qr_json)} chars")
         
-        # STEP 5: Embed QR ke gambar yang SAMA
+        # STEP 5: Embed QR
         img_width, img_height = img_info["width"], img_info["height"]
         if qr_x + qr_size > img_width or qr_y + qr_size > img_height:
             raise HTTPException(400, f"QR position ({qr_x},{qr_y}) size {qr_size} exceeds image bounds ({img_width}x{img_height})")
@@ -498,7 +465,7 @@ async def create_certificate_single_upload(
         print(f"QR embedded at ({qr_x}, {qr_y}) size {qr_size}")
         
         # STEP 6: Save files
-        # Simpan QR standalone (untuk verifikasi)
+        # Simpan QR standalone
         import os
         qr_filename = f"{cert_id}_qr.png"
         qr_path = os.path.join(UPLOAD_DIR, "qrcodes", qr_filename)
@@ -553,7 +520,7 @@ async def create_certificate_single_upload(
             "success": True,
             "certificate_id": cert_id,
             "database_id": db_cert.id,
-            "message": "Certificate created successfully with single upload",
+            "message": "Sertifikat berhasil dibuat",
             "hash_algorithm": "SHA-512",
             "signature_algorithm": "Ed25519",
             "files": {
@@ -579,9 +546,6 @@ async def create_certificate_single_upload(
     
 @router.post("/utils/ocr-preview")
 async def ocr_preview(image: UploadFile = File(...)):
-    """
-    Preview OCR untuk frontend
-    """
     try:
         contents = await image.read()
         raw_text, text_hash = ocr_manager.extract_text_and_hash(contents)
@@ -590,295 +554,9 @@ async def ocr_preview(image: UploadFile = File(...)):
             "success": bool(raw_text),
             "text": raw_text or "",
             "hash": text_hash or "",
-            "preview": (raw_text[:200] + "...") if raw_text and len(raw_text) > 200 else (raw_text or "No text detected"),
+            "preview": (raw_text[:200] + "...") if raw_text and len(raw_text) > 200 else (raw_text or "Tidak diteksi ada teks"),
             "is_mock": not ocr_manager.is_available
         }
     except Exception as e:
         raise HTTPException(500, f"OCR error: {str(e)}")
     
-# @router.post("/certificates")
-# async def create_certificate(
-#     participant_id: int = Form(...),
-#     title: str = Form(...),
-#     description: str = Form(""),
-#     institution: str = Form(""),
-#     issued_date: str = Form(...),
-#     qr_x: int = Form(100),
-#     qr_y: int = Form(100),
-#     qr_size: int = Form(150),
-#     certificate_image: UploadFile = File(...),
-#     template_file: UploadFile = File(...),
-#     db: Session = Depends(get_db),
-#     current_user: User = Depends(get_current_admin)
-# ):
-#     """UC02: Membuat QR Code + UC03: Generate Hash"""
-    
-#     # Verify participant exists
-#     participant = db.query(User).filter(
-#         User.id == participant_id,
-#         User.role == UserRole.PARTICIPANT
-#     ).first()
-    
-#     if not participant:
-#         raise HTTPException(status_code=404, detail="Participant not found")
-    
-#     # Read files
-#     cert_bytes = await certificate_image.read()
-#     template_bytes = await template_file.read()
-    
-#     # STEP 1: OCR (Extract text)
-#     raw_text, text_hash = ocr_manager.extract_full_text(cert_bytes)
-#     if not raw_text:
-#         raise HTTPException(400, "OCR failed to extract text from certificate")
-    
-#     print(f"✅ OCR Result: {len(raw_text)} chars, hash: {text_hash[:20]}...")
-    
-#     # STEP 2: Generate cert_id DULU (sebelum sign!)
-#     cert_id = f"CERT-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
-#     print(f"✅ Generated cert_id: {cert_id}")
-    
-#     # STEP 3: Sign dengan text_hash + cert_id (BUKAN metadata dict!)
-#     sig_data = crypto_manager.sign_certificate(text_hash, cert_id)  # ✅ FIXED: kirim cert_id string
-    
-#     print(f"✅ Signed message: '{sig_data['message']}'")
-    
-#     # STEP 4: Generate QR Code
-#     qr_payload = {
-#         "v": 1,
-#         "mode": "full_text",
-#         "h": text_hash,
-#         "cert_id": cert_id,  # ✅ cert_id yang sama
-#         "s": sig_data["signature"],
-#         "p": sig_data["public_key"]
-#     }
-#     qr_json = json.dumps(qr_payload, separators=(',', ':'))
-#     qr_bytes = qr_manager.generate_qr_code(qr_json)
-
-#     # STEP 4: Save files
-#     cert_id = qr_payload["cert_id"]
-    
-#     import os
-#     qr_path = os.path.join(UPLOAD_DIR, "qrcodes", f"{cert_id}_qr.png")
-#     final_path = os.path.join(UPLOAD_DIR, "certificates", f"{cert_id}_final.png")
-#     template_path = os.path.join(UPLOAD_DIR, "templates", template_file.filename)
-    
-#     os.makedirs(os.path.dirname(qr_path), exist_ok=True)
-    
-#     with open(qr_path, "wb") as f:
-#         f.write(qr_bytes.getvalue())
-    
-#     with open(template_path, "wb") as f:
-#         f.write(template_bytes)
-    
-#     # STEP 5: Embed QR to template
-#     final_bytes = image_processor.add_qr_to_image(
-#         template_bytes, qr_bytes.getvalue(),
-#         {"x": qr_x, "y": qr_y}, qr_size
-#     )
-    
-#     with open(final_path, "wb") as f:
-#         f.write(final_bytes)
-    
-#     # STEP 6: Save to database
-#     db_cert = Certificate(
-#         certificate_id=cert_id,
-#         participant_id=participant_id,
-#         created_by=current_user.id,
-#         title=title,
-#         description=description,
-#         institution=institution,
-#         issued_date=issued_date,
-#         text_hash=text_hash,
-#         raw_text=raw_text[:2000],
-#         message=sig_data["message"],
-#         signature=sig_data["signature"],
-#         public_key=sig_data["public_key"],
-#         qr_payload=qr_payload,
-#         qr_image_path=qr_path,
-#         final_certificate_path=final_path, 
-#         template_path=template_path,
-#         qr_x=qr_x, qr_y=qr_y, qr_size=qr_size
-#     )
-    
-#     db.add(db_cert)
-#     db.commit()
-#     db.refresh(db_cert)
-    
-#     return {
-#         "success": True,
-#         "certificate_id": cert_id,
-#         "message": "Certificate created successfully",
-#         "files": {
-#             "certificate_url": f"/static/certificates/{cert_id}_final.png",
-#             "qr_url": f"/static/qrcodes/{cert_id}_qr.png"
-#         }
-#     }
-
-# @router.post("/certificates")
-# async def create_certificate(
-#     participant_id: int = Form(...),
-#     title: str = Form(...),
-#     description: str = Form(""),
-#     institution: str = Form(""),
-#     issued_date: str = Form(...),
-#     qr_x: int = Form(100),
-#     qr_y: int = Form(100),
-#     qr_size: int = Form(150),
-#     certificate_image: UploadFile = File(...),
-#     template_file: UploadFile = File(...),
-#     db: Session = Depends(get_db),
-#     current_user: User = Depends(get_current_admin)
-# ):
-#     """UC02: Membuat QR Code + UC03: Generate Hash dengan Ed25519 + SHA-512"""
-    
-#     # Verify participant exists
-#     participant = db.query(User).filter(
-#         User.id == participant_id,
-#         User.role == UserRole.PARTICIPANT
-#     ).first()
-    
-#     if not participant:
-#         raise HTTPException(status_code=404, detail="Participant not found")
-    
-#     # Read files
-#     cert_bytes = await certificate_image.read()
-#     template_bytes = await template_file.read()
-    
-#     # STEP 1: OCR dengan method baru (return dict untuk SHA-512)
-#     raw_text, ocr_dict = ocr_manager.extract_full_text_with_dict(cert_bytes)
-#     if not raw_text:
-#         raise HTTPException(400, "OCR failed to extract text from certificate")
-    
-#     print(f"✅ OCR Result: {len(raw_text)} chars, avg confidence: {ocr_dict.get('avg_confidence', 0):.2f}")
-    
-#     # STEP 2: Generate cert_id
-#     cert_id = f"CERT-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
-#     print(f"✅ Generated cert_id: {cert_id}")
-    
-#     # STEP 3: Buat ocr_data dictionary untuk hashing SHA-512
-#     # ⚠️ PENTING: Struktur ini harus sama persis saat verifikasi!
-#     ocr_data = {
-#         "participant_name": participant.full_name,
-#         "participant_email": participant.email,
-#         "title": title,
-#         "institution": institution,
-#         "issued_date": issued_date,
-#         "ocr_text": raw_text[:1000],  # Ambil 1000 char pertama
-#         "ocr_meta": {
-#             "confidence": ocr_dict.get('avg_confidence', 0),
-#             "blocks": ocr_dict.get('total_blocks', 0)
-#         }
-#     }
-    
-#     # STEP 4: Sign dengan EdDSACertificateManager
-#     # Method: sign_certificate(ocr_data: Dict, cert_id: str)
-#     sig_data = crypto_manager.sign_certificate(ocr_data, cert_id)
-    
-#     print(f"✅ Signed message: '{sig_data['message'][:60]}...'")
-#     print(f"✅ SHA-512 Hash: {sig_data['text_hash'][:40]}...")
-    
-#     # STEP 5: Generate QR Code dengan payload kompak
-#     qr_payload = {
-#         "v": 1,                          # Version
-#         "m": "ft",                       # Mode: full_text
-#         "h": sig_data["text_hash"],      # SHA-512 hash (128 hex chars)
-#         "c": cert_id,                    # Cert ID
-#         "s": sig_data["signature"],      # Signature (Base64, ~88 chars)
-#         "p": sig_data["public_key"],     # Public Key (Base64, 44 chars)
-#         "a": "Ed25519",                  # Algorithm
-#         "t": datetime.utcnow().isoformat()  # Timestamp
-#     }
-#     qr_json = json.dumps(qr_payload, separators=(',', ':'))
-#     qr_bytes = qr_manager.generate_qr_code(qr_json)
-
-#     # STEP 6: Save files
-#     import os
-#     qr_path = os.path.join(UPLOAD_DIR, "qrcodes", f"{cert_id}_qr.png")
-#     final_path = os.path.join(UPLOAD_DIR, "certificates", f"{cert_id}_final.png")
-#     template_path = os.path.join(UPLOAD_DIR, "templates", template_file.filename)
-    
-#     os.makedirs(os.path.dirname(qr_path), exist_ok=True)
-#     os.makedirs(os.path.dirname(final_path), exist_ok=True)
-    
-#     with open(qr_path, "wb") as f:
-#         f.write(qr_bytes.getvalue())
-    
-#     with open(template_path, "wb") as f:
-#         f.write(template_bytes)
-    
-#     # STEP 7: Embed QR to template
-#     final_bytes = image_processor.add_qr_to_image(
-#         template_bytes, qr_bytes.getvalue(),
-#         {"x": qr_x, "y": qr_y}, qr_size
-#     )
-    
-#     with open(final_path, "wb") as f:
-#         f.write(final_bytes)
-    
-#     # STEP 8: Save to database
-#     db_cert = Certificate(
-#         certificate_id=cert_id,
-#         participant_id=participant_id,
-#         created_by=current_user.id,
-#         title=title,
-#         description=description,
-#         institution=institution,
-#         issued_date=issued_date,
-#         text_hash=sig_data["text_hash"],     # SHA-512: 128 hex chars
-#         raw_text=raw_text[:2000],
-#         message=sig_data["message"],           # "text_hash=xxx|cert_id=yyy"
-#         signature=sig_data["signature"],
-#         public_key=sig_data["public_key"],
-#         qr_payload=qr_payload,
-#         qr_image_path=qr_path,
-#         final_certificate_path=final_path, 
-#         template_path=template_path,
-#         qr_x=qr_x, qr_y=qr_y, qr_size=qr_size
-#     )
-    
-#     db.add(db_cert)
-#     db.commit()
-#     db.refresh(db_cert)
-    
-#     return {
-#         "success": True,
-#         "certificate_id": cert_id,
-#         "message": "Certificate created successfully",
-#         "signature": {
-#             "algorithm": "Ed25519",
-#             "hash": "SHA-512",
-#             "hash_preview": sig_data["text_hash"][:40] + "..."
-#         },
-#         "files": {
-#             "certificate_url": f"/static/certificates/{cert_id}_final.png",
-#             "qr_url": f"/static/qrcodes/{cert_id}_qr.png"
-#         }
-#     }
-
-# @router.delete("/certificates/{certificate_id}")
-# def delete_certificate(
-#     certificate_id: str,
-#     reason: str = "Deleted by admin",
-#     db: Session = Depends(get_db),
-#     current_user: User = Depends(get_current_admin)
-# ):
-#     """UC04: Menghapus Sertifikat (Soft Delete/Revoke)"""
-    
-#     cert = db.query(Certificate).filter(Certificate.certificate_id == certificate_id).first()
-    
-#     if not cert:
-#         raise HTTPException(status_code=404, detail="Certificate not found")
-    
-#     # Soft delete - mark as revoked
-#     cert.is_revoked = True
-#     cert.revoked_at = datetime.utcnow()
-#     cert.revoked_reason = reason
-    
-#     db.commit()
-    
-#     return {
-#         "message": "Certificate revoked successfully",
-#         "certificate_id": certificate_id,
-#         "revoked_at": cert.revoked_at
-#     }
-

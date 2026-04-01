@@ -14,7 +14,6 @@ const CertificateDetail = () => {
   const [error, setError] = useState('');
   const [downloading, setDownloading] = useState(false);
 
-  // ✅ Helper: Warna icon yang KONTRAS dan selalu terlihat
   const ICON = {
     primary: '#0d6efd',
     success: '#198754',
@@ -24,7 +23,6 @@ const CertificateDetail = () => {
     white: '#ffffff'
   };
 
-  // ✅ Helper: Background rgba untuk opacity
   const BG = (hex, opacity = 0.1) => {
     const r = parseInt(hex.slice(1,3), 16);
     const g = parseInt(hex.slice(3,5), 16);
@@ -75,7 +73,6 @@ const CertificateDetail = () => {
     }
   };
 
-  // ✅ Format tanggal Indonesia
   const formatDate = (dateString) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('id-ID', {

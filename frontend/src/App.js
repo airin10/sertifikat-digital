@@ -3,22 +3,18 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-
 import { AuthProvider } from './contexts/AuthContext';
 
 
-// Auth
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
-// Admin
 import AdminDashboard from './components/admin/AdminDashboard';
 import ParticipantManager from './components/admin/ParticipantManager';
 import CertificateCreator from './components/admin/CertificateCreator';
 import CertificateList from './components/admin/CertificateList';
 
-// Participant
 import ParticipantDashboard from './components/participant/ParticipantDashboard';
 import CertificateDetail from './components/participant/CertificateDetail';
 
-// Public
 import PublicVerify from './components/public/PublicVerify';
 
 function App() {
@@ -31,7 +27,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/verify" element={<PublicVerify />} />
           
-          {/* Admin Routes - Nested */}
+          {/* Admin Routes */}
           <Route
             path="/admin"
             element={
@@ -47,7 +43,7 @@ function App() {
             <Route path="certificates/create" element={<CertificateCreator />} />
           </Route>
           
-          {/* Participant Routes - Nested */}
+          {/* Participant Routes */}
           <Route
             path="/participant"
             element={

@@ -71,17 +71,15 @@ const ParticipantDashboard = () => {
     }
   };
 
-  // ✅ Helper: Warna icon yang KONTRAS dan selalu terlihat
   const ICON = {
-    primary: '#0d6efd',      // Biru Bootstrap
-    success: '#198754',      // Hijau Bootstrap
-    danger: '#dc3545',       // Merah Bootstrap
-    secondary: '#495057',    // Abu GELAP (bukan #6c757d yang terlalu terang)
-    dark: '#212529',         // Hitam Bootstrap
+    primary: '#0d6efd',      
+    success: '#198754',      
+    danger: '#dc3545',       
+    secondary: '#495057',    
+    dark: '#212529',         
     white: '#ffffff'
   };
 
-  // ✅ Helper: Background rgba untuk opacity
   const BG = (hex, opacity = 0.1) => {
     const r = parseInt(hex.slice(1,3), 16);
     const g = parseInt(hex.slice(3,5), 16);
@@ -281,7 +279,7 @@ const ParticipantDashboard = () => {
                       </p>
                     </div>
                     
-                    {/* Actions - ✅ FIXED: Eye icon visibility */}
+                    {/* Actions - FIXED: Eye icon visibility */}
                     <div className="d-flex gap-2">
                       <button
                         onClick={() => downloadCertificate(cert.certificate_id)}
@@ -307,7 +305,7 @@ const ParticipantDashboard = () => {
                         )}
                       </button>
                       
-                      {/* ✅ FIX: Eye button dengan warna yang KONTRAS */}
+                      {/* FIX: Eye button dengan warna yang KONTRAS */}
                       <Link
                         to={`/participant/certificates/${cert.certificate_id}`}
                         className="btn btn-outline-primary view-btn"

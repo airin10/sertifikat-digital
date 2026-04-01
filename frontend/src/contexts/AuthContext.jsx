@@ -9,7 +9,7 @@ export const useAuth = () => {
   return context;
 };
 
-// ✅ Export axios instance agar bisa digunakan di komponen lain
+// Export axios instance agar bisa digunakan di komponen lain
 export const api = axios.create({
   baseURL: 'http://localhost:8000',
   headers: {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Hanya satu initAuth di useEffect
+  // Hanya satu initAuth di useEffect
   useEffect(() => {
     const initAuth = async () => {
       const token = localStorage.getItem('token');
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     initAuth();
-  }, []); // ✅ Empty dependency array, hanya run sekali saat mount
+  }, []); // Empty dependency array, hanya run sekali saat mount
 
   const login = async (username, password) => {
     try {
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', access_token);
       api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
       
-      // ✅ Tambahkan token ke user object
+      // Tambahkan token ke user object
       const userWithToken = { ...user, token: access_token };
       setUser(userWithToken);
       

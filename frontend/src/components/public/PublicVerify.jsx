@@ -91,7 +91,6 @@ const PublicVerify = () => {
     }
   };
 
-  // ✅ Helper: Warna icon Bootstrap native (hex values)
   const ICON = {
     primary: '#0d6efd',
     success: '#198754',
@@ -101,13 +100,11 @@ const PublicVerify = () => {
     white: '#ffffff'
   };
 
-  // ✅ Helper: Tentukan status dengan warna Bootstrap sederhana
   const getStatusConfig = () => {
     if (!result) return null;
     
     const { valid, registered, revoked } = result;
     
-    // 🚨 REVOKED - Merah Bootstrap
     if (revoked) {
       return {
         icon: Ban,
@@ -115,7 +112,7 @@ const PublicVerify = () => {
         bgClass: 'bg-danger',
         textClass: 'text-white',
         borderClass: 'border-danger',
-        badgeClass: 'bg-white text-danger', // ✅ FIX: Badge putih dengan teks merah
+        badgeClass: 'bg-white text-danger', 
         title: 'SERTIFIKAT DICABUT',
         subtitle: 'Tidak berlaku lagi',
         description: result.message || 'Sertifikat ini telah dicabut oleh penerbit',
@@ -123,7 +120,6 @@ const PublicVerify = () => {
       };
     }
     
-    // ✅ VALID + REGISTERED - Hijau Bootstrap
     if (valid && registered) {
       return {
         icon: ShieldCheck,
@@ -139,7 +135,6 @@ const PublicVerify = () => {
       };
     }
     
-    // ⚠️ VALID tapi TIDAK terdaftar - Kuning Bootstrap
     if (valid && !registered) {
       return {
         icon: ShieldAlert,
@@ -155,7 +150,6 @@ const PublicVerify = () => {
       };
     }
     
-    // ❌ TIDAK VALID - Merah Bootstrap
     return {
       icon: FileX,
       iconColor: ICON.white,
@@ -262,7 +256,7 @@ const PublicVerify = () => {
                 )}
               </div>
 
-              {/* Error Alert - Simple */}
+              {/* Error Alert */}
               {error && (
                 <div className="alert alert-danger d-flex align-items-center gap-3 mt-4" role="alert">
                   <AlertCircle color={ICON.white} size={18} />
@@ -271,7 +265,7 @@ const PublicVerify = () => {
                 </div>
               )}
 
-              {/* Verify Button - Simple */}
+              {/* Verify Button*/}
               <button
                 onClick={handleVerify}
                 disabled={!file || loading}
@@ -294,10 +288,10 @@ const PublicVerify = () => {
             </div>
           </div>
         ) : (
-          /* Result Section - Simple Colors */
+          /* Result Section */
           <div className="row g-4">
             
-            {/* Status Card - Simple Bootstrap Colors */}
+            {/* Status Card */}
             <div className="col-lg-5">
               <div className={`card h-100 border-0 shadow-sm ${statusConfig?.bgClass}`}>
                 <div className="card-body d-flex flex-column align-items-center justify-content-center p-4 p-md-5 text-center">
@@ -310,7 +304,6 @@ const PublicVerify = () => {
                     {statusConfig && <statusConfig.icon color={statusConfig.iconColor} size={45} />}
                   </div>
                   
-                  {/* REVOKED Badge - ✅ FIX: White badge on red background */}
                   {statusConfig?.isRevoked && (
                     <span className="badge bg-white text-danger px-3 py-2 mb-3 fw-bold">
                       <Ban color={ICON.danger} size={14} className="me-1" />
@@ -329,7 +322,6 @@ const PublicVerify = () => {
                     {statusConfig?.description}
                   </span>
 
-                  {/* Verification Checks - ✅ FIX: Explicit bg-white + text-dark for revoked state */}
                   <div className="w-100 mt-4">
                     {[
                       { label: 'Integritas Data', val: result.integrity?.hash_match, icon: Fingerprint },
@@ -346,7 +338,6 @@ const PublicVerify = () => {
                           key={idx} 
                           className="d-flex align-items-center justify-content-between p-3 rounded-3 mb-2 border"
                           style={{
-                            // ✅ FIX: Selalu bg-white + text-dark, tidak inherit dari parent
                             backgroundColor: '#ffffff',
                             borderColor: itemColor,
                             color: '#212529'
@@ -362,10 +353,8 @@ const PublicVerify = () => {
                                 color: itemColor
                               }}
                             >
-                              {/* ✅ FIX: Icon color explicit, tidak inherit */}
                               <item.icon color={itemColor} size={16} />
                             </div>
-                            {/* ✅ FIX: Text color explicit */}
                             <span className="text-dark small fw-bold">{item.label}</span>
                           </div>
                           {isValid ? (
@@ -386,12 +375,11 @@ const PublicVerify = () => {
               </div>
             </div>
 
-            {/* Detail Card - Simple White */}
+            {/* Detail Card */}
             <div className="col-lg-7">
               <div className="card border-0 shadow-sm h-100 bg-white">
                 <div className="card-body p-4 p-md-5">
                   
-                  {/* REVOKED Banner - ✅ FIX: Explicit colors */}
                   {result?.revoked && (
                     <div className="alert alert-danger border-0 rounded-3 mb-4 d-flex align-items-center gap-3">
                       <Ban color={ICON.white} size={24} />
@@ -404,7 +392,7 @@ const PublicVerify = () => {
                     </div>
                   )}
 
-                  {/* Card Header - Simple */}
+                  {/* Card Header */}
                   <div className="d-flex align-items-center gap-3 mb-4 pb-4 border-bottom">
                     <div 
                       className={`rounded-circle d-flex align-items-center justify-content-center text-white shadow-sm ${
@@ -428,7 +416,7 @@ const PublicVerify = () => {
                     </div>
                   </div>
 
-                  {/* Certificate Details - Simple Grid */}
+                  {/* Certificate Details */}
                   {result.registered ? (
                     <div className="row g-3">
                       {[
@@ -462,7 +450,7 @@ const PublicVerify = () => {
                         </div>
                       ))}
                       
-                      {/* Revoked Date - Only if revoked */}
+                      {/* Revoked Date */}
                       {result?.revoked && result.certificate?.revoked_at && (
                         <div className="col-12">
                           <div className="p-3 rounded-3 border h-100" style={{backgroundColor: BG_RGBA('#dc3545', 0.1), borderColor: ICON.danger}}>
@@ -482,7 +470,7 @@ const PublicVerify = () => {
                       )}
                     </div>
                   ) : (
-                    /* Not Registered - Simple */
+                    /* Not Registered */
                     <div className="text-center py-4">
                       <div className="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
                            style={{width: '64px', height: '64px'}}>
@@ -495,7 +483,7 @@ const PublicVerify = () => {
                     </div>
                   )}
 
-                  {/* Reset Button - Simple */}
+                  {/* Reset Button */}
                   <button 
                     onClick={resetForm} 
                     className={`btn w-100 mt-4 py-3 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 ${
@@ -511,7 +499,7 @@ const PublicVerify = () => {
           </div>
         )}
 
-        {/* Footer - Simple */}
+        {/* Footer */}
         <div className="text-center mt-5 pt-4">
           <div className="d-inline-flex align-items-center gap-2 text-muted small">
             <Info color={ICON.primary} size={14} />
@@ -527,7 +515,6 @@ const PublicVerify = () => {
   );
 };
 
-// ✅ Helper: RGBA untuk Bootstrap 5.0.0-beta1 (karena bg-opacity-* tidak ada)
 const BG_RGBA = (hex, opacity = 0.1) => {
   const r = parseInt(hex.slice(1,3), 16);
   const g = parseInt(hex.slice(3,5), 16);

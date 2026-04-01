@@ -14,7 +14,7 @@ const ImageDragDrop = ({ onAreaSelected, onImageUploaded, enableSelection = fals
 
   const handleFileUpload = (selectedFile) => {
     if (!selectedFile.type.match('image.*')) {
-      alert('❌ Hanya file gambar yang diperbolehkan!');
+      alert('Hanya file gambar yang diperbolehkan!');
       return;
     }
 
@@ -68,7 +68,7 @@ const ImageDragDrop = ({ onAreaSelected, onImageUploaded, enableSelection = fals
     if (droppedFile && droppedFile.type.match('image.*')) {
       handleFileUpload(droppedFile);
     } else {
-      alert('❌ Hanya file gambar yang diperbolehkan!');
+      alert('Hanya file gambar yang diperbolehkan!');
     }
   };
 

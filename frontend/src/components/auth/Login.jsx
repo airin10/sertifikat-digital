@@ -35,7 +35,6 @@ const Login = () => {
   return (
     <div className="min-vh-100 bg-light d-flex align-items-center justify-content-center px-4 position-relative overflow-hidden">
       
-      {/* Background Decoration - Subtle blobs */}
       <div className="position-absolute top-0 end-0 w-100 h-100 bg-primary bg-opacity-10 rounded-circle" 
            style={{width: '384px', height: '384px', transform: 'translate(25%, -25%)', filter: 'blur(100px)', opacity: '0.5'}} />
       <div className="position-absolute bottom-0 start-0 w-100 h-100 bg-purple bg-opacity-10 rounded-circle" 

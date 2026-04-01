@@ -71,7 +71,7 @@ def get_certificate_detail(
     ).first()
     
     if not cert:
-        raise HTTPException(status_code=404, detail="Certificate not found")
+        raise HTTPException(status_code=404, detail="Sertifikat tidak ditemukan")
     
     return {
         "id": cert.id,

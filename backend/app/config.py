@@ -57,15 +57,3 @@ os.makedirs(KEYS_DIR, exist_ok=True)
 
 PRIVATE_KEY_PATH = os.path.join(KEYS_DIR, "private_key.raw")
 PUBLIC_KEY_PATH = os.path.join(KEYS_DIR, "public_key.raw")
-
-# # Other configs
-# SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
-# UPLOAD_DIR = BASE_DIR / "uploads"
-# PRIVATE_KEY_PATH = BASE_DIR / "keys" / "private_key.raw"
-# PUBLIC_KEY_PATH = BASE_DIR / "keys" / "public_key.raw"
-
-# # Ensure directories exist
-# UPLOAD_DIR.mkdir(exist_ok=True)
-# (UPLOAD_DIR / "templates").mkdir(exist_ok=True)
-# (UPLOAD_DIR / "certificates").mkdir(exist_ok=True)
-# (UPLOAD_DIR / "qrcodes").mkdir(exist_ok=True)
