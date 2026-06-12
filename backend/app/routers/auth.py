@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from app.database import get_db
 from app.models import User, UserRole
-from app.auth import get_current_user, verify_password, create_access_token, get_password_hash, require_role, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.auth_service import get_current_user, verify_password, create_access_token, get_password_hash, require_role, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
@@ -20,7 +20,7 @@ class UserCreate(BaseModel):
     role: UserRole = UserRole.PARTICIPANT
 
 class UserResponse(BaseModel):
-    id: int
+    user_id: int
     username: str
     email: str
     full_name: str
@@ -38,7 +38,7 @@ class TokenResponse(BaseModel):
 def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == request.username).first()
     
-    if not user or not verify_password(request.password, user.hashed_password):
+    if not user or not verify_password(request.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Nama pengguna atau kata sandi salah"

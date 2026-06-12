@@ -2,7 +2,7 @@ import base64
 import hashlib
 import re
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Tuple
 from cryptography.hazmat.primitives.asymmetric import ed25519
@@ -20,9 +20,7 @@ class EdDSACertificateManager:
         
         self._init_keys()
         
-        print(f"EdDSACertificateManager initialized")
-        print(f"Algorithm: Ed25519")
-        print(f"Hash: SHA-512")
+        print(f"EdDSACertificateManager berjalan")
 
     def _init_keys(self) -> None:
         self.private_key_path = self.key_dir / "private_key.raw"
@@ -117,19 +115,18 @@ class EdDSACertificateManager:
             "signature": base64.b64encode(signature).decode('utf-8'),
             "public_key": base64.b64encode(public_key_bytes).decode('utf-8'),
             "algorithm": "Ed25519",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
         
         print(f"Certificate Signed")
         print(f"Cert ID: {cert_id}")
-        print(f"Hash: {text_hash[:32]}...")
+        print(f"Hash: {text_hash}...")
         print(f"Signature: {len(signature)} bytes")
         
         return result
 
     def verify_certificate(self, qr_data: Dict, current_text_hash: str) -> Dict:
         try:
-            # Extract dari QR
             stored_hash = qr_data.get("h")
             stored_cert_id = qr_data.get("c")
             signature_b64 = qr_data.get("s")
@@ -159,6 +156,7 @@ class EdDSACertificateManager:
             except InvalidSignature:
                 sig_valid = False
             except Exception:
+                print(f"Verification error: {e}")
                 sig_valid = False
             
             # 4. Determine status

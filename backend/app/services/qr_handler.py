@@ -73,10 +73,8 @@ class QRCodeManager:
             print("Failed to decode image")
             return None
         
-        # Preprocessing untuk improve detection
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
-        # Try multiple thresholds
         for thresh_val in [127, 100, 150, 80, 180]:
             _, thresh = cv2.threshold(gray, thresh_val, 255, cv2.THRESH_BINARY)
             
