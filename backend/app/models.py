@@ -44,7 +44,6 @@ class Certificate(Base):
     message = Column(Text, nullable=False)
     signature = Column(Text, nullable=False)
     public_key = Column(Text, nullable=False)
-    # original_path = Column(String(255), nullable=True)
     
     # QR & Files
     qr_payload = Column(JSON)

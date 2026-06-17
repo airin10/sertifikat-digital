@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ INTERCEPTOR DENGAN FLAG CHECK
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
       (response) => {
@@ -29,7 +28,7 @@ export const AuthProvider = ({ children }) => {
       },
       (error) => {
         if (error.response?.status === 401) {
-          // ✅ CHECK 1: Apakah sedang logout manual?
+          // CHECK 1: Apakah sedang logout manual?
           const isManualLogout = localStorage.getItem('manual_logout') === 'true';
           
           if (isManualLogout) {
@@ -37,7 +36,7 @@ export const AuthProvider = ({ children }) => {
             return Promise.reject(error);
           }
           
-          // ✅ CHECK 2: Apakah token masih ada?
+          // CHECK 2: Apakah token masih ada?
           const currentToken = localStorage.getItem('token');
           
           if (!currentToken) {
@@ -104,9 +103,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ LOGOUT DENGAN FLAG
+  //LOGOUT 
   const logout = (shouldRedirect = true) => {
-    // ✅ SET FLAG DULU (sebelum hapus token)
     localStorage.setItem('manual_logout', 'true');
     
     // Hapus token
@@ -118,7 +116,6 @@ export const AuthProvider = ({ children }) => {
       window.location.href = '/';
     }
     
-    // ✅ HAPUS FLAG setelah 3 detik (untuk handle API calls yang masih pending)
     setTimeout(() => {
       localStorage.removeItem('manual_logout');
     }, 3000);

@@ -980,7 +980,7 @@ header.shadow-sm {
   background: #f3f4f6; /* Background abu-abu sangat tipis */
 }
 
-/* ✅ ACTIVE STATE (Saat diklik/pilih) */
+/* ACTIVE STATE (Saat diklik/pilih) */
 .cred-header-link.active {
   background: #e0d4f5; /* Background ungu muda (sesuai gambar) */
   color: #a300c8;      /* Teks ungu tua */
@@ -1040,7 +1040,7 @@ header.shadow-sm {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-left: auto; /* ✅ Kunci: otomatis dorong navigasi & tombol logout ke kanan */
+  margin-left: auto; /* Kunci: otomatis dorong navigasi & tombol logout ke kanan */
   position: static;  /* Hapus absolute positioning & centering lama */
   left: auto;
   transform: none;

@@ -4,10 +4,8 @@ import { AuthProvider } from './contexts/AuthContext';
 
 // Auth & Shared
 import Login from './components/auth/Login';
-// ❌ HAPUS: import Register from './components/auth/Register';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Dashboard from './components/shared/Dashboard'; 
-// ❌ HAPUS: import AppHeader from './components/shared/AppHeader';
 
 // Admin Pages
 import ParticipantManager from './components/admin/ParticipantManager';
@@ -21,12 +19,9 @@ import CertificateDetail from './components/participant/CertificateDetail';
 // Public Pages
 import PublicVerify from './components/public/PublicVerify';
 
-// ✅ PERBAIKAN: Hapus AppHeader dari Layout (karena sudah ada di setiap komponen)
 function AdminLayout() {
   return (
     <div className="admin-layout">
-      {/* ❌ HAPUS: <AppHeader /> */}
-      {/* ❌ HAPUS: <div className="app-header-spacer" /> */}
       <Outlet />
     </div>
   );
@@ -35,8 +30,6 @@ function AdminLayout() {
 function ParticipantLayout() {
   return (
     <div className="participant-layout">
-      {/* ❌ HAPUS: <AppHeader /> */}
-      {/* ❌ HAPUS: <div className="app-header-spacer" /> */}
       <Outlet />
     </div>
   );
@@ -49,18 +42,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           
-          {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
-          {/* ❌ HAPUS: <Route path="/register" element={<Register />} /> */}
           <Route path="/verify" element={<PublicVerify />} />
           
-          {/* Admin Management Routes */}
           <Route path="/admin" element={
             <ProtectedRoute allowedRoles={['admin']}>
               <AdminLayout />
             </ProtectedRoute>
           }>
-            {/* ✅ PERBAIKAN: Redirect ke halaman yang sesuai */}
             <Route index element={<Navigate to="/admin/participants" replace />} />
             <Route path="participants" element={<ParticipantManager />} />
             <Route path="certificates" element={<CertificateList />} />
@@ -73,7 +62,6 @@ function App() {
               <ParticipantLayout />
             </ProtectedRoute>
           }>
-            {/* ✅ PERBAIKAN: Redirect ke halaman yang sesuai */}
             <Route index element={<Navigate to="/participant/mycertificate" replace />} />
             <Route path="mycertificate" element={<MyCertificate />} />
             <Route path="certificates/:id" element={<CertificateDetail />} />

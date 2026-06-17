@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Zap, FileText, QrCode, Award, PenTool, ArrowRight } from 'lucide-react';
 import AppHeader from './AppHeader';
-import { useAuth } from '../../contexts/AuthContext'; // ✅ 1. Import useAuth
+import { useAuth } from '../../contexts/AuthContext'; 
 
 const Dashboard = () => {
-  // ✅ 2. Ambil status autentikasi dari context
   const { user, isAuthenticated } = useAuth();
 
   const COLORS = {
@@ -100,7 +99,7 @@ const Dashboard = () => {
               Verifikasi Sertifikat
             </Link> */}
 
-            {/* ✅ 3. PERBAIKAN: Conditional Rendering untuk Tombol */}
+            {/* 3. PERBAIKAN: Conditional Rendering untuk Tombol */}
             {/* {isAuthenticated ? (
               // Jika SUDAH login, arahkan ke dashboard sesuai role
               <Link 

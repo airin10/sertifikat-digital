@@ -24,7 +24,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // ✅ OPSIONAL: Validasi client-side
     if (username.length < 3) {
       setError('Username minimal 3 karakter');
       return;
@@ -40,11 +39,10 @@ const Login = () => {
     try {
       const user = await login(username, password);
       
-      // ✅ PERBAIKAN: Route yang benar
       if (user.role === 'admin') {
-        navigate('/');  // ✅ Beranda admin
+        navigate('/');  
       } else {
-        navigate('/participant/mycertificate');  // ✅ Halaman sertifikat participant
+        navigate('/participant/mycertificate'); 
       }
     } catch (err) {
       setError(err.response?.data?.detail || 'Username atau kata sandi salah');
@@ -61,7 +59,6 @@ const Login = () => {
         padding: '2rem 1rem'
       }}
     >
-      {/* Decorative Background Elements */}
       <div 
         style={{
           position: 'absolute',
@@ -255,7 +252,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* ✅ TAMBAHKAN: Verify Certificate Link */}
           {/* <Link 
             to="/verify" 
             className="btn w-100 py-3 fw-semibold d-flex align-items-center justify-content-center gap-2 mt-3"

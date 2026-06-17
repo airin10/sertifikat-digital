@@ -22,6 +22,26 @@ class EdDSACertificateManager:
         
         print(f"EdDSACertificateManager berjalan")
 
+    def _print_key_info(self) -> None:
+        """Helper function untuk mencetak detail kunci ke console"""
+        # Serialize ke raw bytes untuk mendapatkan hex dan ukuran yang benar
+        private_bytes = self.private_key.private_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PrivateFormat.Raw,
+            encryption_algorithm=serialization.NoEncryption()
+        )
+        public_bytes = self.public_key.public_bytes(
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PublicFormat.Raw
+        )
+
+        print("\n--- HASIL KEY GENERATION ED25519 ---")
+        print(f"Ukuran Private Key: {len(private_bytes)} bytes")
+        print(f"Private Key (Hex): {private_bytes.hex()}")
+        print(f"\nUkuran Public Key: {len(public_bytes)} bytes")
+        print(f"Public Key (Hex): {public_bytes.hex()}")
+        print("------------------------------------\n")
+
     def _init_keys(self) -> None:
         self.private_key_path = self.key_dir / "private_key.raw"
         self.public_key_path = self.key_dir / "public_key.raw"
@@ -58,7 +78,7 @@ class EdDSACertificateManager:
             if stored_public != current_public:
                 raise ValueError("Public key mismatch")
         
-        print(f"Loaded: 32-byte key pair")
+        self._print_key_info()
 
     def _generate_new_keys(self) -> None:
         self.private_key = ed25519.Ed25519PrivateKey.generate()
@@ -87,6 +107,7 @@ class EdDSACertificateManager:
             f.write(public_bytes)
         
         print(f"Generated: New Ed25519 key pair")
+        self._print_key_info()
 
     def sign_certificate(self, text_hash: str, cert_id: str) -> Dict:
         # Validasi format SHA-512

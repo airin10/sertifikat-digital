@@ -148,7 +148,6 @@ const CertificateCreator = () => {
     });
   };
 
-  // ========== FUNGSI DOWNLOAD YANG DIPERBAIKI ==========
   const handleDownload = async () => {
     if (!result?.files?.certificate_url) {
       alert('URL sertifikat tidak ditemukan!');
@@ -161,7 +160,6 @@ const CertificateCreator = () => {
       const token = user?.token || localStorage.getItem('token');
       const url = `http://localhost:8000${result.files.certificate_url}`;
       
-      // Gunakan fetch dengan authentication
       const response = await fetch(url, {
         method: 'GET',
         headers: token ? { 'Authorization': `Bearer ${token}` } : {},
@@ -171,20 +169,16 @@ const CertificateCreator = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Konversi response ke blob
       const blob = await response.blob();
       
-      // Buat URL object dari blob
       const blobUrl = window.URL.createObjectURL(blob);
       
-      // Buat link download
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = `${result.certificate_id}.png`;
       document.body.appendChild(link);
       link.click();
       
-      // Cleanup
       setTimeout(() => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
@@ -193,7 +187,6 @@ const CertificateCreator = () => {
     } catch (error) {
       console.error('Gagal mengunduh sertifikat:', error);
       
-      // Fallback: buka di tab baru jika fetch gagal
       try {
         const fallbackUrl = `http://localhost:8000${result.files.certificate_url}`;
         window.open(fallbackUrl, '_blank');
@@ -260,7 +253,6 @@ const CertificateCreator = () => {
                 </div>
               </div>
 
-              {/* Action Button - Kanan */}
               <button
                 onClick={handleReset}
                 className="btn d-flex align-items-center justify-content-center gap-2 px-4 py-2 fw-semibold flex-shrink-0"
@@ -310,7 +302,7 @@ const CertificateCreator = () => {
                       </h3>
                     </div>
                     <div className="card-body p-4">
-                      {/* Preview Image dengan Loading Overlay */}
+                      {/* Preview Image */}
                       <div 
                         className="bg-light rounded-3 overflow-hidden position-relative mb-3" 
                         style={{
@@ -326,7 +318,7 @@ const CertificateCreator = () => {
                           onError={(e) => { e.target.src = '/placeholder-certificate.png'; }} 
                         />
                         
-                        {/* Loading Overlay saat Downloading */}
+                        {/* Downloading */}
                         {downloading && (
                           <div 
                             className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
@@ -385,11 +377,6 @@ const CertificateCreator = () => {
                           </>
                         )}
                       </button>
-
-                      {/* Info Text */}
-                      {/* <p className="text-center text-muted small mt-2 mb-0">
-                        <small>File akan diunduh dalam format PNG</small>
-                      </p> */}
                     </div>
                   </div>
                 </div>
@@ -465,7 +452,7 @@ const CertificateCreator = () => {
         <div className="admin-header-spacer" />
 
       
-      {/* ========== NEW HEADER SECTION ========== */}
+      {/* ========== HEADER SECTION ========== */}
       <div 
         style={{
           background: `linear-gradient(150deg, ${COLORS.primary} 0%, ${COLORS.primaryDark} 100%)`,

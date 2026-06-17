@@ -149,7 +149,6 @@ const AppHeader = () => {
         </div>
       )}
 
-      {/* ✅ MODAL KONFIRMASI LOGOUT - Mirip ParticipantManager */}
       {showLogoutConfirm && (
         <div 
           className="modal fade show d-block" 
@@ -166,7 +165,7 @@ const AppHeader = () => {
                 overflow: 'hidden'
               }}
             >
-              {/* Header - Gradient Merah (bahaya/logout) */}
+              {/* Header */}
               <div 
                 className="modal-header border-0 py-4"
                 style={{

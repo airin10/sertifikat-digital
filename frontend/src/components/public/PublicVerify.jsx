@@ -53,11 +53,11 @@ const PublicVerify = () => {
   const handleFile = (selectedFile) => {
     const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     if (!validTypes.includes(selectedFile.type)) {
-      setError('Format file tidak didukung. Gunakan PNG/JPG/JPEG.');
+      setError('Format file tidak didukung');
       return;
     }
     if (selectedFile.size > 10 * 1024 * 1024) {
-      setError('Ukuran file terlalu besar. Maksimal 10MB.');
+      setError('Ukuran file maksimal 10MB');
       return;
     }
     setFile(selectedFile);
@@ -533,7 +533,6 @@ const PublicVerify = () => {
                         );
                       }
 
-                      // Logika normal untuk item yang bisa ditentukan
                       const isValid = item.val;
                       const itemColor = isValid ? COLORS.success : COLORS.danger;
                       const itemBg = isValid ? BG_RGBA(COLORS.success, 0.1) : BG_RGBA(COLORS.danger, 0.1);

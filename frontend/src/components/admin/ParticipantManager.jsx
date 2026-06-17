@@ -139,7 +139,6 @@ const ParticipantManager = () => {
     if (e.target === e.currentTarget) setShowModal(false);
   };
 
-  // Search logic only (no status filter)
   const filteredParticipants = participants.filter(p => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
@@ -165,7 +164,6 @@ const ParticipantManager = () => {
           overflow: 'hidden'
         }}
       >
-        {/* Background Pattern */}
         <div 
           style={{
             position: 'absolute',
@@ -177,35 +175,16 @@ const ParticipantManager = () => {
         />
 
         <div className="container position-relative">
-          {/* Breadcrumb */}
-          {/* <div className="mb-3">
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb mb-0" style={{fontSize: '0.85rem'}}>
-                <li className="breadcrumb-item">
-                  <Link to="/admin/dashboard" className="text-white-50 text-decoration-none">
-                    Dashboard
-                  </Link>
-                </li>
-                <li className="breadcrumb-item text-white-50">
-                  <ChevronRight size={14} className="align-middle" />
-                </li>
-                <li className="breadcrumb-item text-white active" aria-current="page">
-                  Peserta
-                </li>
-              </ol>
-            </nav>
-          </div> */}
-
           {/* Title & Action */}
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
             <div>
               <div className="d-flex align-items-center gap-3 mb-2">
                 <h1 className="h3 fw-bold text-white mb-0">
-                  Manajemen Data Peserta
+                  Mengelola Data Peserta
                 </h1>
               </div>
               <p className="text-white-50 mb-0">
-                Menambah, mengubah, atau menghapus data peserta yang terdaftar sebagai penerima sertifikat digital
+                Menambah, mengubah, atau menghapus data peserta sebagai penerima sertifikat digital
               </p>
             </div>
             
@@ -240,84 +219,81 @@ const ParticipantManager = () => {
       <div className="container" style={{marginTop: '-2rem', position: 'relative', zIndex: 10}}>
 
         {/* Search & Total Section */}
-{!loading && participants.length > 0 && (
-  <div className="mb-4">
-    <div 
-      className="card border-0"
-      style={{
-        borderRadius: '16px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
-      }}
-    >
-      <div className="card-body p-3">
-        <div className="row g-3 align-items-center">
-          {/* Search Input */}
-          <div className="col-md-10">
-            <div className="position-relative">
-              <Search className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={18} />
-              <input
-                type="text"
-                className="form-control ps-5"
-                placeholder="Cari berdasarkan username, nama lengkap, atau email..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  borderRadius: '12px',
-                  border: `2px solid ${COLORS.light}`,
-                  transition: 'all 0.3s ease',
-                  height: '48px'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = COLORS.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${COLORS.primary}20`;
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = COLORS.light;
-                  e.target.style.boxShadow = 'none';
-                }}
-              />
-              {searchQuery && (
-                <button 
-                  className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted p-0 me-3"
-                  onClick={() => setSearchQuery('')}
-                >
-                  <XCircle size={18} />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Total Peserta - Di dalam card yang sama, di kanan */}
-          <div className="col-md-2">
+        {!loading && participants.length > 0 && (
+          <div className="mb-4">
             <div 
-              className="d-flex align-items-center justify-content-between h-100 px-3 py-2 rounded-3"
+              className="card border-0"
               style={{
-                background: `linear-gradient(150deg, ${COLORS.primary} 0%, ${COLORS.primaryDark} 100%)`,
-                minHeight: '48px'
+                borderRadius: '16px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
               }}
             >
-              <p className="text-white mb-0 fw-semibold small">Total Peserta</p>
-              <span 
-                className="badge rounded-pill px-3 py-2"
-                style={{
-                  // background: 'white',
-                  // color: COLORS.primary,
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
-                  minWidth: '32px'
-                }}
-              >
-                {participants.length}
-              </span>
+              <div className="card-body p-3">
+                <div className="row g-3 align-items-center">
+                  {/* Search Input */}
+                  <div className="col-md-10">
+                    <div className="position-relative">
+                      <Search className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={18} />
+                      <input
+                        type="text"
+                        className="form-control ps-5"
+                        placeholder="Cari berdasarkan username, nama lengkap, atau email..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        style={{
+                          borderRadius: '12px',
+                          border: `2px solid ${COLORS.light}`,
+                          transition: 'all 0.3s ease',
+                          height: '48px'
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = COLORS.primary;
+                          e.target.style.boxShadow = `0 0 0 3px ${COLORS.primary}20`;
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = COLORS.light;
+                          e.target.style.boxShadow = 'none';
+                        }}
+                      />
+                      {searchQuery && (
+                        <button 
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-muted p-0 me-3"
+                          onClick={() => setSearchQuery('')}
+                        >
+                          <XCircle size={18} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-md-2">
+                    <div 
+                      className="d-flex align-items-center justify-content-between h-100 px-3 py-2 rounded-3"
+                      style={{
+                        background: `linear-gradient(150deg, ${COLORS.primary} 0%, ${COLORS.primaryDark} 100%)`,
+                        minHeight: '48px'
+                      }}
+                    >
+                      <p className="text-white mb-0 fw-semibold small">Total Peserta</p>
+                      <span 
+                        className="badge rounded-pill px-3 py-2"
+                        style={{
+                          fontSize: '1rem',
+                          fontWeight: 'bold',
+                          minWidth: '32px'
+                        }}
+                      >
+                        {participants.length}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+        )}
 
-{/* Alert */}
+        {/* Alert */}
         {alert.show && (
           <div 
             className="alert alert-dismissible fade show d-flex align-items-center gap-3 mb-4" 
@@ -708,16 +684,6 @@ const ParticipantManager = () => {
                   </div>
                 </div>
                 <div className="modal-body p-4 text-center">
-                  {/* <div 
-                    className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-                    style={{
-                      width: '64px',
-                      height: '64px',
-                      background: `${COLORS.danger}15`
-                    }}
-                  >
-                    <Trash2 color={COLORS.danger} size={28} />
-                  </div> */}
                   <p className="text-dark mb-0">
                     Apakah Anda yakin ingin menghapus peserta ini?
                   </p>

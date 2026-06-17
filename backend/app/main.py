@@ -7,7 +7,6 @@ from app.config import UPLOAD_DIR
 from app.database import engine, Base
 from app.routers import auth, admin, participant, verify
 
-# Create tables
 Base.metadata.create_all(bind=engine)
 
 # ==========================================

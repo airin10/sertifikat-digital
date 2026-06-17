@@ -5,9 +5,6 @@ import os
 from typing import Dict, Union, Optional
 
 class ImageProcessor:
-    # def __init__(self):
-    #     self.upload_folder = "uploads/temp"
-    #     os.makedirs(self.upload_folder, exist_ok=True)
     
     def validate_image(self, image_bytes: bytes) -> Dict:
         try:
@@ -107,17 +104,7 @@ class ImageProcessor:
         except Exception as e:
             print(f"Error in add_qr_to_image: {e}")
             raise e
-    
-    # def add_qr_and_get_base64(self, template_bytes: bytes, qr_bytes: bytes, 
-    #                          position: Dict, qr_size: int) -> Optional[str]:
-    #     try:
-    #         image_bytes = self.add_qr_to_image(template_bytes, qr_bytes, position, qr_size)
-    #         return base64.b64encode(image_bytes).decode()
-            
-    #     except Exception as e:
-    #         print(f"Error in add_qr_and_get_base64: {e}")
-    #         return None
-    
+
     def image_to_base64(self, image_bytes: Union[bytes, BytesIO]) -> str:
         if isinstance(image_bytes, BytesIO):
             image_bytes = image_bytes.getvalue()

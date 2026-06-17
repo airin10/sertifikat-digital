@@ -20,8 +20,6 @@ from app.config import UPLOAD_DIR, CERTIFICATES_DIR, QRCODES_DIR
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
 
-# ========== REQUEST MODELS ==========
-
 class ParticipantCreate(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     email: str = Field(..., pattern=r'^[\w\.-]+@[\w\.-]+\.\w+$')
@@ -364,13 +362,13 @@ async def create_certificate_single_upload(
         
         # STEP 6: Save files
         qr_filename = f"{cert_id}_qr.png"
-        qr_path = os.path.join(QRCODES_DIR, qr_filename)  # ✅ Gunakan konstanta
+        qr_path = os.path.join(QRCODES_DIR, qr_filename)  
         os.makedirs(os.path.dirname(qr_path), exist_ok=True)
         with open(qr_path, "wb") as f:
             f.write(qr_bytes.getvalue())
         
         final_filename = f"{cert_id}_final.png"
-        final_path = os.path.join(CERTIFICATES_DIR, final_filename)  # ✅ Gunakan konstanta
+        final_path = os.path.join(CERTIFICATES_DIR, final_filename)  
         with open(final_path, "wb") as f:
             f.write(final_bytes)
         

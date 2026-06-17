@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { participantApi } from '../../services/api';
-import AppHeader from '../shared/AppHeader';  // ✅ TAMBAHKAN
+import AppHeader from '../shared/AppHeader';  
 import { 
   CheckCircle, XCircle, 
   Calendar, Building, Hash,
-  ArrowLeft, Download  // ✅ TAMBAHKAN
+  ArrowLeft, Download  
 } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:8000';  // ✅ Konstanta URL
+const API_BASE_URL = 'http://localhost:8000';  
 
 const CertificateDetail = () => {
   const { id } = useParams();
@@ -61,7 +61,7 @@ const CertificateDetail = () => {
   const handleDownload = async () => {
     try {
       setDownloading(true);
-      setError('');  // ✅ Clear error sebelum download
+      setError(''); 
       const response = await participantApi.downloadCertificate(id);
       
       const blob = new Blob([response.data], { type: 'image/png' });
@@ -75,7 +75,6 @@ const CertificateDetail = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Gagal mengunduh sertifikat:', error);
-      // ✅ Pakai error state, bukan alert()
       setError('Gagal mengunduh sertifikat. Silakan coba lagi.');
     } finally {
       setDownloading(false);
@@ -96,7 +95,7 @@ const CertificateDetail = () => {
   if (loading) {
     return (
       <>
-        <AppHeader />  {/* ✅ TAMBAHKAN */}
+        <AppHeader /> 
             <div className="admin-header-spacer" />
 
         <div className="min-vh-100 bg-light d-flex align-items-center justify-content-center">
@@ -112,7 +111,7 @@ const CertificateDetail = () => {
   if (error && !certificate) {
     return (
       <>
-        <AppHeader />  {/* ✅ TAMBAHKAN */}
+        <AppHeader />  
             <div className="admin-header-spacer" />
 
         <div className="min-vh-100 bg-light d-flex flex-column align-items-center justify-content-center p-4">
@@ -122,7 +121,6 @@ const CertificateDetail = () => {
           </div>
           <h2 className="h5 fw-bold text-dark mb-2">{error}</h2>
           <p className="text-muted mb-4 text-center">Sertifikat mungkin telah dihapus atau Anda tidak memiliki akses.</p>
-          {/* ✅ PERBAIKAN: Route yang benar */}
           <Link to="/participant/mycertificate" className="btn btn-primary px-4">
             Kembali
           </Link>
@@ -133,26 +131,13 @@ const CertificateDetail = () => {
 
   return (
     <>
-      <AppHeader />  {/* ✅ TAMBAHKAN */}
+      <AppHeader /> 
             <div className="admin-header-spacer" />
 
       <div className="min-vh-100 bg-light">
         <main className="container py-4 py-md-5">
           <div className="row justify-content-center">
             <div className="col-lg-10">
-              
-              {/* ✅ TAMBAHKAN: Back Button & Breadcrumb */}
-              {/* <div className="mb-4">
-                <Link 
-                  to="/participant/mycertificate" 
-                  className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2"
-                >
-                  <ArrowLeft size={14} />
-                  <span>Kembali ke Sertifikat Saya</span>
-                </Link>
-              </div> */}
-
-              {/* ✅ Error Alert (untuk error saat download) */}
               {error && certificate && (
                 <div 
                   className="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-3 mb-4" 
@@ -194,7 +179,7 @@ const CertificateDetail = () => {
                     <div className="card-body p-4">
                       <div className="bg-light rounded-3 overflow-hidden" style={{aspectRatio: '4/3'}}>
                         <img 
-                          src={`${API_BASE_URL}${certificate.download_url}`}  // ✅ Pakai konstanta
+                          src={`${API_BASE_URL}${certificate.download_url}`} 
                           alt={certificate.title}
                           className="w-100 h-100"
                           style={{objectFit: 'contain'}}
@@ -204,7 +189,7 @@ const CertificateDetail = () => {
                         />
                       </div>
                       
-                      {/* ✅ TAMBAHKAN: Download Button */}
+                      {/* Download Button */}
                       <button
                         onClick={handleDownload}
                         disabled={certificate.is_revoked || downloading}

@@ -80,8 +80,7 @@ class OCRManager:
 
     def _sort_boxes_by_position(self, results: List) -> List:
         """
-     Sort hasil OCR berdasarkan posisi: top-to-bottom, left-to-right
-        Ini KRITIS untuk konsistensi hash!
+        Sort hasil OCR berdasarkan posisi: top-to-bottom, left-to-right
         """
         def get_sort_key(item):
             bbox, text, conf = item
@@ -95,7 +94,7 @@ class OCRManager:
 
     def _normalize_text(self, text: str) -> str:
         """
-     Normalisasi teks untuk konsistensi hash
+        Normalisasi teks untuk konsistensi hash
         """
         # Lowercase
         text = text.lower()
@@ -128,21 +127,21 @@ class OCRManager:
             results = self.reader.readtext(
                 img_array, 
                 detail=1,
-                text_threshold=0.7,      # Naikkan dari default
-                low_text=0.4,            # Naikkan dari default
-                link_threshold=0.5,      # Naikkan dari default
-                canvas_size=1280,        # Fixed canvas size
-                mag_ratio=2.0,           # Fixed magnification
+                text_threshold=0.7,      
+                low_text=0.4,            
+                link_threshold=0.5,      
+                canvas_size=1280,       
+                mag_ratio=2.0,          
             )
             
             if not results:
                 logger.warning("No text detected")
                 return "", ""
             
-            # STEP 1: Filter dengan confidence threshold LEBIH TINGGI
+            # STEP 1: Filter 
             filtered_results = []
             for (bbox, text, conf) in results:
-                if conf > 0.5 and text.strip():  # Naikkan dari 0.3 ke 0.5
+                if conf > 0.5 and text.strip():  
                     filtered_results.append((bbox, text, conf))
             
             if not filtered_results:

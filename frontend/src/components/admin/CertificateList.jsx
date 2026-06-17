@@ -145,7 +145,7 @@ const CertificateList = () => {
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
             <div>
               <div className="d-flex align-items-center gap-3 mb-2">
-                <h1 className="h3 fw-bold text-white mb-0">Manajemen Sertifikat</h1>
+                <h1 className="h3 fw-bold text-white mb-0">Mengelola Sertifikat Peserta</h1>
               </div>
                 <p className="text-white-50 mb-0">Mengelola semua sertifikat digital yang telah diterbitkan</p>
             </div>
@@ -328,7 +328,7 @@ const CertificateList = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn btn-sm"
-                            title="Lihat Detail Sertifikat"
+                            title="Lihat Sertifikat"
                             style={{
                               border: `1px solid ${COLORS.secondary}30`, color: COLORS.secondary,
                               borderRadius: '8px', transition: 'all 0.3s ease'
@@ -450,11 +450,6 @@ const CertificateList = () => {
               </div>
 
               <div className="modal-body p-4 text-center">
-                {/* <div className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style={{
-                  width: '64px', height: '64px', background: `${COLORS.danger}15`
-                }}>
-                  <Trash2 color={COLORS.danger} size={28} />
-                </div> */}
                 <p className="text-dark mb-1 fw-semibold">Apakah Anda yakin ingin mencabut sertifikat ini?</p>
               </div>
 
@@ -489,7 +484,6 @@ const CertificateList = () => {
                     </>
                   ) : (
                     <>
-                      {/* <Trash2 size={16} /> */}
                       <span>Ya, Cabut Sertifikat</span>
                     </>
                   )}

@@ -25,7 +25,6 @@ MYSQL_USER = MYSQL_CONFIG['user']
 MYSQL_PASSWORD = MYSQL_CONFIG['password']
 MYSQL_DATABASE = MYSQL_CONFIG['database']
 
-# SECRET_KEY = os.getenv("SECRET_KEY", "aFNyQQa2ItLtwf7gZ1tgHqeQKAfKj6f2ue12zc4eagO_irr5rFxV50tojoKxyPKzR4j_pNOHH40OD3SheXRIbA")
 SECRET_KEY = secrets.token_urlsafe(64)
 ALGORITHM = "HS512"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  
@@ -38,7 +37,6 @@ QRCODES_DIR = os.path.join(UPLOAD_DIR, "qrcodes")
 for folder in [UPLOAD_DIR, CERTIFICATES_DIR, QRCODES_DIR]:
     os.makedirs(folder, exist_ok=True)
 
-# EdDSA CONFIGURATION
 KEYS_DIR = os.path.join(BASE_DIR, "keys")
 os.makedirs(KEYS_DIR, exist_ok=True)
 
