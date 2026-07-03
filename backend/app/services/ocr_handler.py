@@ -23,7 +23,7 @@ class OCRManager:
     def _init_reader(self):
         try:
             import easyocr
-            logger.info("Loading EasyOCR model...")
+            print("Loading EasyOCR model...")
             self.reader = easyocr.Reader(
                 self.languages,
                 gpu=False,
@@ -32,7 +32,7 @@ class OCRManager:
                 download_enabled=True
             )
             self._easyocr_available = True
-            logger.info("EasyOCR ready!")
+            print("EasyOCR ready!")
         except ImportError:
             logger.error("EasyOCR not installed. Run: pip install easyocr")
             self.reader = None
@@ -60,7 +60,7 @@ class OCRManager:
             ratio = max_width / image.width
             new_size = (max_width, int(image.height * ratio))
             image = image.resize(new_size, Image.Resampling.LANCZOS)
-            logger.info(f"Resized to {new_size}")
+            print(f"Resized to {new_size}")
         
         # STEP 2: Convert ke grayscale untuk konsistensi
         image = image.convert('L')
@@ -117,7 +117,7 @@ class OCRManager:
         
         try:
             image = Image.open(io.BytesIO(image_bytes))
-            logger.info(f"Processing image: {image.size}")
+            print(f"Processing image: {image.size}")
             
             # Preprocessing deterministik
             image = self.preprocess_image(image)
@@ -167,8 +167,8 @@ class OCRManager:
             # STEP 5: Final normalization
             raw_text = self._normalize_text(raw_text)
             
-            logger.info(f"Extracted {len(texts)} blocks, {len(raw_text)} chars")
-            logger.info(f"Text preview: {raw_text[:100]}...")
+            print(f"Extracted {len(texts)} blocks, {len(raw_text)} chars")
+            print(f"Text preview: {raw_text[:100]}...")
             
             # STEP 6: Hash dengan SHA-512
             text_hash = hashlib.sha512(raw_text.encode('utf-8')).hexdigest()
@@ -221,7 +221,7 @@ ocr_manager = OCRManager()
 #     def _init_reader(self):
 #         try:
 #             import easyocr
-#             logger.info("Loading EasyOCR model...")
+#             print("Loading EasyOCR model...")
 #             self.reader = easyocr.Reader(
 #                 self.languages,
 #                 gpu=False,
@@ -230,7 +230,7 @@ ocr_manager = OCRManager()
 #                 download_enabled=True
 #             )
 #             self._easyocr_available = True
-#             logger.info("EasyOCR ready!")
+#             print("EasyOCR ready!")
 #         except ImportError:
 #             logger.error("EasyOCR not installed. Run: pip install easyocr")
 #             self.reader = None

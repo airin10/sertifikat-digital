@@ -21,6 +21,36 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     certificates = relationship("Certificate", back_populates="participant", foreign_keys="Certificate.participant_id")
 
+# class Certificate(Base):
+#     __tablename__ = "certificates"
+    
+#     id = Column(Integer, primary_key=True, index=True)
+#     participant_id = Column(Integer, ForeignKey("users.user_id"))
+#     certificate_id = Column(String(50), unique=True, index=True)
+#     title = Column(String(200))
+#     description = Column(Text)
+#     institution = Column(String(100))
+#     issued_date = Column(String(20))
+#     text_hash = Column(String(128))
+#     raw_text = Column(Text)
+#     message = Column(Text)
+#     signature = Column(Text)
+#     public_key = Column(Text)
+#     algorithm = Column(String(20), default="ed25519") 
+#     qr_payload = Column(JSON)
+#     qr_image_path = Column(String(255))
+#     final_certificate_path = Column(String(255))
+#     qr_x = Column(Integer)
+#     qr_y = Column(Integer)
+#     qr_size = Column(Integer)
+#     is_revoked = Column(Boolean, default=False)
+#     revoked_at = Column(DateTime)
+#     created_at = Column(DateTime(timezone=True), server_default=func.now())
+#     updated_at = Column(DateTime(timezone=True), onupdate=func.now())      
+
+#     participant = relationship("User", back_populates="certificates", foreign_keys=[participant_id])
+#     verification_logs = relationship("VerificationLog", back_populates="certificate") 
+    
 class Certificate(Base):
     __tablename__ = "certificates"
     

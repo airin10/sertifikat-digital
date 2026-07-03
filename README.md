@@ -1,8 +1,8 @@
 Sistem ini merupakan aplikasi untuk mengelola dan memverifikasi sertifikat digital
 
 Tech Stack
-Backend: Python (FastAPI)
-Frontend: React.js
+Backend: Python (FastAPI), 
+Frontend: React.js, 
 Database: MySQL (phpMyAdmin)
 
 Persiapan Awal

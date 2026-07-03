@@ -40,7 +40,6 @@ api.interceptors.response.use(
 export const authApi = {
   login: (credentials) => api.post('/api/auth/login', credentials),
   getProfile: () => api.get('/api/auth/profile'),
-  // Dihapus: register (endpoint tidak ada di backend)
 };
 
 // ==========================================

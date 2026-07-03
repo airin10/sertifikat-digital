@@ -15,7 +15,7 @@ class QRCodeManager:
     def generate_qr_code(self, data: str) -> BytesIO:
         qr = qrcode.QRCode(
             version=None,  
-            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
             box_size=self.size,
             border=self.border,
         )
@@ -26,7 +26,7 @@ class QRCodeManager:
         img_bytes = BytesIO()
         img.save(img_bytes, format="PNG")
         img_bytes.seek(0)
-        
+        print("INI VERSI QR CODE:",qr.version)
         return img_bytes
     
     def decode_qr_from_image(self, image_bytes: bytes) -> Optional[str]:
