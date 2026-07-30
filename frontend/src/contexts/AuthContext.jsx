@@ -1,3 +1,6 @@
+// menyimpan status login pengguna secara global, mengelola token JWT, 
+// menangani pengalihan (redirect) halaman
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 

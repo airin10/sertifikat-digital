@@ -1,3 +1,6 @@
+# mengolah gambar
+# menyematkan kode QR ke dalam gambar sertifikat
+
 from PIL import Image, ImageDraw
 from io import BytesIO
 import base64
@@ -5,7 +8,8 @@ import os
 from typing import Dict, Union, Optional
 
 class ImageProcessor:
-    
+
+    # memastikan file yang diunggah gambar yang valid
     def validate_image(self, image_bytes: bytes) -> Dict:
         try:
             img = Image.open(BytesIO(image_bytes))

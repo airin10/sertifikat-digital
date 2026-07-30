@@ -1,3 +1,6 @@
+# proses verifikasi mandiri oleh pihak ketiga
+# bisa diakses oleh siapa saja tanpa autentikasi
+
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -57,7 +60,7 @@ def make_response(valid, registered, revoked, message, cert=None,
         }
     }
 
-
+# tidak ada current_user
 @router.post("")  
 async def verify_certificate(
     file: UploadFile = File(...),
@@ -67,13 +70,13 @@ async def verify_certificate(
     
     try:
         print(f"\n{'='*70}")
-        print(f"🔍 MEMULAI VERIFIKASI SERTIFIKAT")
+        print(f"MEMULAI VERIFIKASI SERTIFIKAT")
         print(f"{'='*70}")
         
         # ========== STEP 1: Baca File & Decode QR ==========
         step_start = time.perf_counter()
-        file_bytes = await file.read()
-        file_size_mb = len(file_bytes) / (1024 * 1024)
+        file_bytes = await file.read() #File gambar sertifikat dibaca sebagai bytes
+        file_size_mb = len(file_bytes) / (1024 * 1024) #Ukuran file dihitung dalam MB
         
         decoded = qr_manager.decode_qr_from_image(file_bytes)
         step1_time = (time.perf_counter() - step_start) * 1000
@@ -96,8 +99,8 @@ async def verify_certificate(
             print(f"STEP 1: Baca File & Decode QR")
             print(f"Ukuran file   : {file_size_mb:.2f} MB")
             print(f"QR Payload    : {len(decoded)} karakter")
-            print(f"Durasi     : {step1_time:.2f} ms")
-        except json.JSONDecodeError:
+            print(f"Durasi        : {step1_time:.2f} ms")
+        except json.JSONDecodeError: # jika format JSON invalid
             total_time = (time.perf_counter() - total_start) * 1000
             return make_response(
                 valid=False, registered=False, revoked=False,
@@ -137,11 +140,11 @@ async def verify_certificate(
         print(f"Certificate ID: {cert_id}")
         print(f"Terdaftar     : {'Ya' if is_registered else 'Tidak'}")
         print(f"Status        : {'DICABUT' if is_revoked else 'AKTIF'}")
-        print(f"Durasi     : {step2_time:.2f} ms")
+        print(f"Durasi        : {step2_time:.2f} ms")
         
         if cert:
             recipient_name = cert.participant.full_name if cert.participant else "Unknown"
-            print(f"   Penerima      : {recipient_name}")
+            print(f"Penerima      : {recipient_name}")
         
         # ========== STEP 3: OCR Teks Sertifikat ==========
         step_start = time.perf_counter()
@@ -165,8 +168,8 @@ async def verify_certificate(
         
         print(f"\nSTEP 3: Ekstraksi Teks (OCR) + SHA-512 Hashing")
         print(f"Panjang teks  : {len(current_text)} karakter")
-        print(f"Hash OCR      : {current_hash[:50]}...")
-        print(f"Durasi     : {step3_time:.2f} ms  ← Terlama")
+        print(f"Hash OCR      : {current_hash}")
+        print(f"Durasi        : {step3_time:.2f} ms")
         
         # ========== STEP 4: Verifikasi Kriptografi ==========
         step_start = time.perf_counter()
@@ -184,7 +187,7 @@ async def verify_certificate(
         print(f"Hash Match    : {'Cocok' if hash_match else 'Tidak Cocok'}")
         print(f"Sig Valid     : {'Valid' if signature_valid else 'Invalid'}")
         print(f"Status        : {status}")
-        print(f"Durasi     : {step4_time:.4f} ms  ← Sangat Cepat!")
+        print(f"Durasi        : {step4_time:.4f} ms")
         
         # ========== STEP 5: Tentukan Hasil Akhir ==========
         is_valid = verify_result.get("valid", False) and not is_revoked
@@ -194,7 +197,7 @@ async def verify_certificate(
         step_start = time.perf_counter()
         if cert:
             log = VerificationLog(
-                certificate_id=cert.id,
+                certificate_id=cert.certificate_id,
                 text_hash=text_hash,
                 verification_result=is_valid,
                 details={
@@ -212,7 +215,7 @@ async def verify_certificate(
         step6_time = (time.perf_counter() - step_start) * 1000
         
         print(f"\nSTEP 6: Simpan Log Verifikasi") 
-        print(f"Durasi     : {step6_time:.2f} ms")
+        print(f"Durasi        : {step6_time:.2f} ms")
         
         # ========== STEP 7: Tentukan Pesan ==========
         if is_revoked:
@@ -234,11 +237,11 @@ async def verify_certificate(
         print(f"RINGKASAN DURASI VERIFIKASI:")
         print(f"Step 1 (Baca File + Decode QR) : {step1_time:>10.2f} ms")
         print(f"Step 2 (Lookup Database)       : {step2_time:>10.2f} ms")
-        print(f"Step 3 (OCR + Hash)            : {step3_time:>10.2f} ms  ← Terlama")
-        print(f"Step 4 (Ed25519 Verify)        : {step4_time:>10.4f} ms  ← Sangat Cepat!")
+        print(f"Step 3 (OCR + Hash)            : {step3_time:>10.2f} ms")
+        print(f"Step 4 (Ed25519 Verify)        : {step4_time:>10.4f} ms")
         print(f"   {'─'*40}")
-        print(f"TOTAL WAKTU                 : {total_time:>10.2f} ms ({total_time/1000:.2f} detik)")
-        print(f"Ukuran File                  : {file_size_mb:>10.2f} MB")
+        print(f"TOTAL WAKTU                    : {total_time:>10.2f} ms ({total_time/1000:.2f} detik)")
+        print(f"Ukuran File                    : {file_size_mb:>10.2f} MB")
         print(f"{'='*70}\n")
         
         return make_response(

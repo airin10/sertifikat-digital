@@ -1,3 +1,5 @@
+# menangani autentikasi(siapa yang login) dan otorisasi (apa yang boleh dilakukan)
+
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 import hashlib
@@ -20,6 +22,8 @@ def get_password_hash(password: str) -> str:
     """
     Hash password dengan SHA-256 + bcrypt (double-hash pattern).
     """
+    # SHA-256 -> Mengubah password panjang menjadi hash tetap 64 karakter, mencegah masalah panjang input bcrypt (max 72 bytes)
+    # Bcrypt -> Menambahkan salt otomatis dan work factor, tahan terhadap rainbow table attack dan brute force
     password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return pwd_context.hash(password_hash)
 

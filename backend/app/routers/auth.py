@@ -1,7 +1,9 @@
+# autentikasi sistem untuk login dan mendapatkan JWT token sebelum bisa mengakses fitur-fitur yang dilindungi
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from app.database import get_db
+from app.database import get_db #Dependency untuk mendapatkan sesi database
 from app.models import User, UserRole
 from app.auth_service import get_current_user, verify_password, create_access_token, get_password_hash, require_role, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
@@ -34,6 +36,7 @@ class TokenResponse(BaseModel):
     token_type: str
     user: UserResponse
 
+# Memverifikasi username/password dan memberikan JWT token
 @router.post("/login", response_model=TokenResponse)
 def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == request.username).first()
@@ -50,6 +53,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
             detail="Akun tidak aktif"
         )
     
+    #Buat JWT token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username, "role": user.role.value},
@@ -62,6 +66,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         "user": user
     }
 
+# no
 @router.get("/profile", response_model=UserResponse)
 def get_profile(current_user: User = Depends(get_current_user)):
     """Get current user profile"""

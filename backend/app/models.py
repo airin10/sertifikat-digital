@@ -1,3 +1,6 @@
+''' SKEMA DATABASE '''
+# isi database yang mau diinput
+
 from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, JSON, ForeignKey, Enum, Date
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -8,6 +11,7 @@ class UserRole(str, enum.Enum):
     ADMIN = "admin"
     PARTICIPANT = "participant"
 
+# Menyimpan data pengguna(admin dan peserta)
 class User(Base):
     __tablename__ = "users"
     
@@ -19,16 +23,17 @@ class User(Base):
     full_name = Column(String(100), nullable=False)
     is_active = Column(Boolean, default=True, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    certificates = relationship("Certificate", back_populates="participant", foreign_keys="Certificate.participant_id")
+    certificates = relationship("Certificate", back_populates="participant", foreign_keys="Certificate.user_id")
     
+# Menyimpan semua data sertifikat
 class Certificate(Base):
     __tablename__ = "certificates"
     
-    id = Column(Integer, primary_key=True, index=True)
-    certificate_id = Column(String(50), unique=True, index=True, nullable=False)
+    # id = Column(Integer, primary_key=True, index=True)
+    certificate_id = Column(String(50), primary_key=True, unique=True, index=True, nullable=False)
     
     # Foreign Keys
-    participant_id = Column(Integer, ForeignKey("users.user_id", ondelete="RESTRICT"))
+    user_id = Column(Integer, ForeignKey("users.user_id", ondelete="RESTRICT"))
     
     # Certificate Data
     title = Column(String(200), nullable=False)
@@ -62,14 +67,15 @@ class Certificate(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
-    participant = relationship("User", back_populates="certificates", foreign_keys=[participant_id])
+    participant = relationship("User", back_populates="certificates", foreign_keys=[user_id])
     verification_logs = relationship("VerificationLog", back_populates="certificate")
 
+# merekam setiap kali seseorang memverifikasi sertifikat (berhasil atau gagal)
 class VerificationLog(Base):
     __tablename__ = "verification_logs"
     
     verification_id = Column(Integer, primary_key=True, index=True)
-    certificate_id = Column(Integer, ForeignKey("certificates.id"), nullable=False, index=True)
+    certificate_id = Column(String(50), ForeignKey("certificates.certificate_id"), nullable=False, index=True)
     text_hash = Column(String(128))
     verification_result = Column(Boolean)
     verified_at = Column(DateTime(timezone=True), server_default=func.now())

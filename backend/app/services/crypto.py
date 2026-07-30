@@ -11,6 +11,7 @@ from cryptography.exceptions import InvalidSignature
 
 
 class EdDSACertificateManager:
+    # Membuat folder keys terlebih dahulu
     def __init__(self, key_dir: str = "./keys"):
         self.key_dir = Path(key_dir)
         self.key_dir.mkdir(exist_ok=True, parents=True)
@@ -23,13 +24,14 @@ class EdDSACertificateManager:
         print(f"EdDSACertificateManager berjalan")
 
     def _print_key_info(self) -> None:
-        """Helper function untuk mencetak detail kunci ke console"""
-        # Serialize ke raw bytes untuk mendapatkan hex dan ukuran yang benar
+        """Menampilkan detail kunci dalam format hex"""
+        # Serialize private key ke raw bytes (32 bytes)
         private_bytes = self.private_key.private_bytes(
             encoding=serialization.Encoding.Raw,
             format=serialization.PrivateFormat.Raw,
             encryption_algorithm=serialization.NoEncryption()
         )
+        # Serialize public key ke raw bytes (32 bytes)
         public_bytes = self.public_key.public_bytes(
             encoding=serialization.Encoding.Raw,
             format=serialization.PublicFormat.Raw
@@ -60,12 +62,16 @@ class EdDSACertificateManager:
         with open(self.private_key_path, "rb") as f:
             private_bytes = f.read()
         
+        # Validasi ukuran harus 32 bytes
         if len(private_bytes) != 32:
             raise ValueError(f"Invalid private key: {len(private_bytes)} bytes")
         
+        # Rekonstruksi private key object
         self.private_key = ed25519.Ed25519PrivateKey.from_private_bytes(private_bytes)
+        # Derive public key dan cocokkan dengan file tersimpan
         self.public_key = self.private_key.public_key()
         
+        # verifikasi public key match
         if self.public_key_path.exists():
             with open(self.public_key_path, "rb") as f:
                 stored_public = f.read()
@@ -81,9 +87,12 @@ class EdDSACertificateManager:
         self._print_key_info()
 
     def _generate_new_keys(self) -> None:
+        # Generate private key (32 bytes acak)
         self.private_key = ed25519.Ed25519PrivateKey.generate()
+        # Derive public key dari private key (A = [s]B)
         self.public_key = self.private_key.public_key()
         
+        # Simpan private key ke file
         private_bytes = self.private_key.private_bytes(
             encoding=serialization.Encoding.Raw,
             format=serialization.PrivateFormat.Raw,
@@ -98,6 +107,7 @@ class EdDSACertificateManager:
         except:
             pass
         
+        # Simpan public key ke file
         public_bytes = self.public_key.public_bytes(
             encoding=serialization.Encoding.Raw,
             format=serialization.PublicFormat.Raw
@@ -117,7 +127,7 @@ class EdDSACertificateManager:
         if not cert_id or not isinstance(cert_id, str):
             raise ValueError("cert_id must be non-empty string")
         
-        # Message yang di-sign: hash + cert_id binding
+        # Message yang di-sign: hash + cert_id 
         message = f"text_hash={text_hash}|cert_id={cert_id}"
         
         # Sign dengan Ed25519

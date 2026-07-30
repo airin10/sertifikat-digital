@@ -1,9 +1,15 @@
+# Membuat router terpisah untuk endpoint admin
+# menerima file gambar sertifikat dari frontend
+
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
+# Untuk pencarian multi-kolom (judul ATAU nama peserta ATAU ID)
 from sqlalchemy import or_
 from typing import List, Optional
+# Validasi input otomatis dari Pydantic
 from pydantic import BaseModel, Field, validator
 import json
+# Generate ID unik untuk sertifikat (contoh: CERT-20260722-A1B2C3)
 import uuid
 import os
 from datetime import datetime, timezone
@@ -18,6 +24,7 @@ from app.services.ocr_handler import ocr_manager
 from app.services.image_handler import image_processor
 from app.config import UPLOAD_DIR, CERTIFICATES_DIR, QRCODES_DIR  
 
+# Semua endpoint di file ini otomatis memiliki prefix /api/admin
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
 
@@ -86,14 +93,14 @@ def create_participant(
     return participant
 
 
-@router.get("/participants/{participant_id}", response_model=ParticipantResponse)
+@router.get("/participants/{user_id}", response_model=ParticipantResponse)
 def get_participant(
-    participant_id: int,
+    user_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
     participant = db.query(User).filter(
-        User.user_id == participant_id,
+        User.user_id == user_id,
         User.role == UserRole.PARTICIPANT
     ).first()
     
@@ -103,15 +110,15 @@ def get_participant(
     return participant
 
 
-@router.put("/participants/{participant_id}", response_model=ParticipantResponse)
+@router.put("/participants/{user_id}", response_model=ParticipantResponse)
 def update_participant(
-    participant_id: int,
+    user_id: int,
     request: ParticipantUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
     participant = db.query(User).filter(
-        User.user_id == participant_id,
+        User.user_id == user_id,
         User.role == UserRole.PARTICIPANT
     ).first()
     
@@ -134,14 +141,14 @@ def update_participant(
     return participant
 
 
-@router.delete("/participants/{participant_id}")
+@router.delete("/participants/{user_id}")
 def delete_participant(
-    participant_id: int,
+    user_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
     participant = db.query(User).filter(
-        User.user_id == participant_id,
+        User.user_id == user_id,
         User.role == UserRole.PARTICIPANT
     ).first()
     
@@ -162,7 +169,7 @@ def delete_participant(
 # ========== CERTIFICATE MANAGEMENT ==========
 
 class CertificateResponse(BaseModel):
-    id: int
+    # id: str
     certificate_id: str
     participant_name: str
     title: str
@@ -185,7 +192,7 @@ def list_certificates(
     current_user: User = Depends(get_current_admin)
 ):
     """List sertifikat dengan filter dan search"""
-    query = db.query(Certificate).join(User, Certificate.participant_id == User.user_id)
+    query = db.query(Certificate).join(User, Certificate.user_id == User.user_id)
     
     if status == "active":
         query = query.filter(Certificate.is_revoked == False)
@@ -196,19 +203,20 @@ def list_certificates(
         search_filter = f"%{search}%"
         query = query.filter(
             or_(
-                Certificate.title.ilike(search_filter),
+                Certificate.title.ilike(search_filter), #Case-insensitive search
                 Certificate.certificate_id.ilike(search_filter),
                 User.full_name.ilike(search_filter),
                 Certificate.institution.ilike(search_filter)
             )
         )
     
+    # urutkan dari yang terbaru
     certificates = query.order_by(Certificate.created_at.desc()).offset(skip).limit(limit).all()
     
     result = []
     for cert in certificates:
         result.append({
-            "id": cert.id,
+            # "id": cert.id,
             "certificate_id": cert.certificate_id,
             "title": cert.title,
             "participant_name": cert.participant.full_name if cert.participant else "Unknown",
@@ -243,9 +251,9 @@ def revoke_certificate(
     
     db.commit()
     
-    return {"message": "Sertifikat berhasil dicabut", "certificate_id": certificate_id}
+    return {"message": "Sertifikat berhasil dicabut", "id": certificate_id}
 
-
+# no use
 @router.get("/dashboard/stats")
 def get_dashboard_stats(
     db: Session = Depends(get_db),
@@ -331,7 +339,7 @@ def analyze_qr_payload(qr_payload: dict, qr_json: str) -> dict:
 
 @router.post("/certificates/single-upload")
 async def create_certificate_single_upload(
-    participant_id: int = Form(...),
+    user_id: int = Form(...),
     title: str = Form(...),
     description: str = Form(""),
     institution: str = Form(""),
@@ -352,7 +360,7 @@ async def create_certificate_single_upload(
         print(f"\n{'='*70}")
         print(f"MEMULAI PEMBUATAN SERTIFIKAT (Ed25519)")
         print(f"{'='*70}")
-        print(f"Participant ID : {participant_id}")
+        print(f"Participant ID : {user_id}")
         print(f"Title          : {title}")
         print(f"{'='*70}\n")
         
@@ -376,7 +384,7 @@ async def create_certificate_single_upload(
         if qr_size < 50 or qr_size > 500:
             raise HTTPException(400, "Ukuran QR harus 50-500 pixel")
         
-        step1_time = (time.perf_counter() - step_start) * 1000
+        step1_time = (time.perf_counter() - step_start) * 1000 # Pengukuran waktu presisi tinggi (untuk metrik performa)
         file_size_mb = len(cert_bytes) / (1024 * 1024)
         
         print(f"STEP 1: Baca & Validasi File")
@@ -384,7 +392,7 @@ async def create_certificate_single_upload(
         print(f"Dimensi       : {img_info['width']}x{img_info['height']} px")
         print(f"Durasi     : {step1_time:.2f} ms")
         
-        # ========== STEP 2: OCR → Text → Hash (SHA-512) ==========
+        # ========== STEP 2: OCR -> Text -> Hash (SHA-512) ==========
         step_start = time.perf_counter()
         raw_text, text_hash = ocr_manager.extract_text_and_hash(cert_bytes)
         step2_time = (time.perf_counter() - step_start) * 1000
@@ -451,6 +459,7 @@ async def create_certificate_single_upload(
         # ========== STEP 6: Embed QR ke Gambar ==========
         step_start = time.perf_counter()
         img_width, img_height = img_info["width"], img_info["height"]
+        # Validasi QR tidak keluar dari gambar
         if qr_x + qr_size > img_width or qr_y + qr_size > img_height:
             raise HTTPException(400, f"QR position ({qr_x},{qr_y}) size {qr_size} exceeds image bounds ({img_width}x{img_height})")
         
@@ -490,7 +499,7 @@ async def create_certificate_single_upload(
         step_start = time.perf_counter()
         db_cert = Certificate(
             certificate_id=cert_id,
-            participant_id=participant_id,
+            user_id=user_id,
             title=title,
             description=description,
             institution=institution,
@@ -512,7 +521,7 @@ async def create_certificate_single_upload(
         step8_time = (time.perf_counter() - step_start) * 1000
         
         print(f"\nSTEP 8: Simpan ke Database")
-        print(f"Database ID   : {db_cert.id}")
+        print(f"Database ID   : {db_cert.certificate_id}")
         print(f"Durasi     : {step8_time:.2f} ms")
         
         # ========== HITUNG TOTAL WAKTU ==========
@@ -523,9 +532,9 @@ async def create_certificate_single_upload(
         print(f"{'='*70}")
         print(f"RINGKASAN DURASI PER TAHAP:")
         print(f"   Step 1 (Baca File)       : {step1_time:>10.2f} ms")
-        print(f"   Step 2 (OCR + Hash)      : {step2_time:>10.2f} ms  ← Terlama")
+        print(f"   Step 2 (OCR + Hash)      : {step2_time:>10.2f} ms")
         print(f"   Step 3 (Generate ID)     : {step3_time:>10.4f} ms")
-        print(f"   Step 4 (Ed25519 Sign)    : {step4_time:>10.4f} ms  ← Sangat Cepat!")
+        print(f"   Step 4 (Ed25519 Sign)    : {step4_time:>10.4f} ms")
         print(f"   Step 5 (QR + Analisis)   : {step5_time:>10.2f} ms")
         print(f"   Step 6 (Embed QR)        : {step6_time:>10.2f} ms")
         print(f"   Step 7 (Save File)       : {step7_time:>10.2f} ms")
@@ -539,7 +548,7 @@ async def create_certificate_single_upload(
         return {
             "success": True,
             "certificate_id": cert_id,
-            "database_id": db_cert.id,
+            "database_id": db_cert.certificate_id,
             "message": "Sertifikat berhasil dibuat",
             "hash_algorithm": "SHA-512",
             "signature_algorithm": "Ed25519",

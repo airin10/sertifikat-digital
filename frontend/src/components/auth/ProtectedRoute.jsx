@@ -1,5 +1,9 @@
+// Autentikasi apakah user sudah login dan 
+// Otorisasi/RBAC apakah user punya hak akses ke halaman ini
+
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { Dna } from 'lucide-react'
 
 const ProtectedRoute = ({ allowedRoles, children }) => {
   const { user, loading, isAuthenticated } = useAuth();

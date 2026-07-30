@@ -1,21 +1,56 @@
+# Framework utama backend untuk membuat REST API
 fastapi==0.104.1
+
+#ASGI server untuk menjalankan aplikasi FastAPI
 uvicorn[standard]==0.24.0
+
+# Handle upload file (gambar sertifikat) via form-data
 python-multipart==0.0.6
+
+# Implementasi Ed25519, SHA-512, dan key management
 cryptography==41.0.7
+
+# Manipulasi gambar (resize, embed QR Code ke sertifikat)
 Pillow==10.1.0
+
+# Generate QR Code berisi payload kriptografi (hash, signature, public key)
 qrcode[pil]==7.4.2
+
+# Validasi data otomatis (bawaan FastAPI)
 pydantic==2.5.0
+
+# Membaca variabel environment dari file
 python-dotenv==1.0.0
+
+# ORM untuk berinteraksi dengan MySQL
 sqlalchemy==2.0.23
+
+# Driver Python untuk koneksi ke database MySQL
 pymysql==1.1.0
 pytesseract==0.3.10
+
+# Preprocessing gambar sebelum OCR (grayscale, denoise)
 opencv-python==4.8.1.78
 pynacl== 1.6.2
+
+# Decode QR Code dari gambar saat proses verifikasi
 pyzbar==0.1.9
+
+# Library numerik
 numpy==1.26.4
+
+# Mengekstrak teks dari gambar sertifikat
 easyocr==1.7.1
+
+# model deep learning OCR
 torch>=2.0.0
+
+# dependency EasyOCR
 torchvision>=0.15.0
+
+# Membuat dan memverifikasi JWT token untuk login admin/peserta
 python-jose[cryptography]
+
+# Hashing password pengguna dengan algoritma bcrypt (keamanan database)
 passlib[bcrypt]
 jwt-decode

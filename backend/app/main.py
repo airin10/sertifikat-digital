@@ -7,6 +7,7 @@ from app.config import UPLOAD_DIR
 from app.database import engine, Base
 from app.routers import auth, admin, participant, verify
 
+# memberitahu SQLAlchemy untuk secara otomatis membuat semua tabel di database MySQL berdasarkan model yang sudah Anda definisikan di models.py
 Base.metadata.create_all(bind=engine)
 
 # ==========================================
@@ -23,6 +24,8 @@ app = FastAPI(
 # CORS (Cross-Origin Resource Sharing)
 # ==========================================
 
+# Middleware ini memberi "izin" khusus agar Frontend React(yang berjalan di port 3000) 
+# diizinkan berkomunikasi dengan Backend FastAPI (port 8000).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],

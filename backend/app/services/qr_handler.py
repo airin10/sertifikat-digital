@@ -1,3 +1,4 @@
+# mengubah data kriptografi menjadi qr code yang bisa discan
 import qrcode
 import json
 from io import BytesIO
@@ -14,8 +15,8 @@ class QRCodeManager:
     
     def generate_qr_code(self, data: str) -> BytesIO:
         qr = qrcode.QRCode(
-            version=None,  
-            error_correction=qrcode.constants.ERROR_CORRECT_M,
+            version=None,  #auto-sizing, menghitung versi QR code yang terkecil
+            error_correction=qrcode.constants.ERROR_CORRECT_M, #15, toleransi kerusakan
             box_size=self.size,
             border=self.border,
         )
@@ -58,7 +59,7 @@ class QRCodeManager:
         
         if decoded_objects:
             qr_text = decoded_objects[0].data.decode('utf-8')
-            print(f"QR decoded (pyzbar): {qr_text[:100]}...")
+            print(f"QR decoded (pyzbar): {qr_text}")
             return qr_text
         
         return None
@@ -74,7 +75,8 @@ class QRCodeManager:
             return None
         
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        
+
+        # mencoba 5 kali, meningkatkan keberhasilan pembacaan qr code
         for thresh_val in [127, 100, 150, 80, 180]:
             _, thresh = cv2.threshold(gray, thresh_val, 255, cv2.THRESH_BINARY)
             

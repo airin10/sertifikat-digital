@@ -279,7 +279,7 @@ const CertificateList = () => {
                 </thead>
                 <tbody className="border-top">
                   {filteredCerts.map((cert) => (
-                    <tr key={cert.id || cert.certificate_id}>
+                    <tr key={cert.certificate_id || cert.certificate_id}>
                       <td className="px-4 py-3">
                         <code className="small px-2 py-1 rounded" style={{color: COLORS.primary, background: `${COLORS.primary}10`, fontSize: '0.8rem'}}>
                           {cert.certificate_id}

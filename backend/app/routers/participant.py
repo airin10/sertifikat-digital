@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/participant", tags=["Participant"])
 
 
 class CertificateListItem(BaseModel):
-    id: int
+    # id: int
     certificate_id: str
     title: str
     institution: str
@@ -26,7 +26,7 @@ class CertificateListItem(BaseModel):
 
 
 class CertificateDetail(BaseModel):
-    id: int
+    # id: int
     certificate_id: str
     title: str
     description: str
@@ -46,13 +46,13 @@ def get_my_certificates(
     current_user: User = Depends(get_current_participant)
 ):
     certificates = db.query(Certificate).filter(
-        Certificate.participant_id == current_user.user_id
+        Certificate.user_id == current_user.user_id
     ).order_by(Certificate.created_at.desc()).all()
     
     result = []
     for cert in certificates:
         result.append({
-            "id": cert.id,
+            # "id": cert.id,
             "certificate_id": cert.certificate_id,
             "title": cert.title,
             "institution": cert.institution,
@@ -72,14 +72,14 @@ def get_certificate_detail(
 ):
     cert = db.query(Certificate).filter(
         Certificate.certificate_id == certificate_id,
-        Certificate.participant_id == current_user.user_id
+        Certificate.user_id == current_user.user_id
     ).first()
     
     if not cert:
         raise HTTPException(status_code=404, detail="Sertifikat tidak ditemukan")
     
     return {
-        "id": cert.id,
+        # "id": cert.id,
         "certificate_id": cert.certificate_id,
         "title": cert.title,
         "description": cert.description,
@@ -99,7 +99,7 @@ def download_certificate(
 ):
     cert = db.query(Certificate).filter(
         Certificate.certificate_id == certificate_id,
-        Certificate.participant_id == current_user.user_id
+        Certificate.user_id == current_user.user_id
     ).first()
     
     if not cert:
@@ -118,15 +118,16 @@ def download_certificate(
     )
 
 
-@router.get("/profile")
-def get_profile(
-    current_user: User = Depends(get_current_participant)
-):
-    return {
-        "id": current_user.user_id,
-        "username": current_user.username,
-        "email": current_user.email,
-        "full_name": current_user.full_name,
-        "created_at": current_user.created_at.isoformat() if current_user.created_at else None
-    }
+# no
+# @router.get("/profile")
+# def get_profile(
+#     current_user: User = Depends(get_current_participant)
+# ):
+#     return {
+#         "id": current_user.user_id,
+#         "username": current_user.username,
+#         "email": current_user.email,
+#         "full_name": current_user.full_name,
+#         "created_at": current_user.created_at.isoformat() if current_user.created_at else None
+#     }
 

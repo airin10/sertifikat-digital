@@ -1,11 +1,14 @@
+# Setup database
+# menyiapkan database MySQL sistem dari 0
+
 import sys
 import os
-import getpass
+import getpass # input password yang disembunyikan (tidak terlihat saat diketik)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+    sys.path.insert(0, parent_dir) # Menambahkan folder parent ke path Python agar bisa import app.config, app.database
 
 import pymysql
 from sqlalchemy import inspect, text
@@ -45,6 +48,7 @@ def print_warning(message: str):
     print(f"{message}")
 
 
+#mengecek apakah MySQL server bisa dihubungi
 def check_mysql_connection() -> bool:
     print_info("Mengecek koneksi MySQL...")
     try:
@@ -71,7 +75,7 @@ def check_mysql_connection() -> bool:
         print("\nPastikan XAMPP MySQL sudah running (port 3307)")
         return False
 
-
+# Menghapus dan membuat ulang database
 def reset_database() -> bool:
     print_header(" RESET DATABASE")
     
@@ -196,7 +200,7 @@ def create_first_admin() -> bool:
             username=username,
             email=email,
             full_name=full_name,
-            password=get_password_hash(password),
+            password=get_password_hash(password), # ambil dari auth_service
             role=UserRole.ADMIN,
             is_active=True
         )

@@ -1,3 +1,5 @@
+// menghubungkan antarmuka React dengan backend FastAPI
+
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000';
@@ -39,7 +41,7 @@ api.interceptors.response.use(
 // ==========================================
 export const authApi = {
   login: (credentials) => api.post('/api/auth/login', credentials),
-  getProfile: () => api.get('/api/auth/profile'),
+  // getProfile: () => api.get('/api/auth/profile'),
 };
 
 // ==========================================
@@ -87,7 +89,7 @@ export const participantApi = {
   downloadCertificate: (id) => api.get(`/api/participant/certificates/${id}/download`, {
     responseType: 'blob'
   }),
-  getProfile: () => api.get('/api/participant/profile'),
+  // getProfile: () => api.get('/api/participant/profile'),
 };
 
 // ==========================================

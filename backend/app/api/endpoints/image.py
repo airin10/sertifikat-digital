@@ -1,9 +1,14 @@
+# Menangani unggahan file
+
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from backend.app.services.image_handler import image_processor
 import base64
 
 router = APIRouter(prefix="/api/image", tags=["image"])
 
+# Menerima file gambar sertifikat dari frontend,  
+# memastikannya aman dan valid, lalu mengembalikan preview (dalam format Base64) 
+# beserta metadata dimensi (lebar & tinggi)
 @router.post("/upload")
 async def upload_image(
     file: UploadFile = File(...)
@@ -17,7 +22,7 @@ async def upload_image(
         # Baca file
         content = await file.read()
         
-        # Validasi gambar
+        # Validasi gambar jika ada mengganti ekstensi(.exe,.php) menjadi .jpg
         validation = image_processor.validate_image(content)
         if not validation["valid"]:
             raise HTTPException(400, f"File tidak valid: {validation.get('error')}")
